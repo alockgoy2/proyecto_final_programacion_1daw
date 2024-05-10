@@ -1,6 +1,12 @@
-package proyectofinal.proyectofinal;
-import java.util.Scanner; //importar Scanner
+import java.util.*;
+import java.io.*;
+import java.sql.*;
+//importar todo lo necesario
+
 public class Principal {
+
+    //cosas que se pueden usar en varios métodos
+    static Scanner sc = new Scanner(System.in); //scanner
     public static void main(String[] args) {
         //llamar al menú
         mostrarMenu();
@@ -113,9 +119,50 @@ public class Principal {
 
     /**
      * método para añadir un producto
+     * como solo los empleados pueden añadir un producto, primero se tiene que hacer un log-in para verificar que es un empleado
+     * esto último se comprobará con una consulta parecida a "select nombre from empleados where id = X and claveAcceso = X"
+     * si esta consulta devuelve un resultado se podrá añadir un producto
      */
     public static void anadirProducto(){
+        //datos de conexión a la base de datos
+        String baseDatos = "jdbc:mysql://localhost:3306/empleadosProyectoFinal";
+        String usuario = "root";
+        String claveAcceso = "franceselquemehackee";
 
+        //pedir el logueo del empleado
+        System.out.print("\nPor favor, introduce tu ID de empleado: ");
+        int idEmpleado = sc.nextInt();
+        System.out.print("Por favor, introduce tu contraseña: ");
+        String claveAccesoEmpleado = sc.next();
+
+        //try-catch para realizar la conexión a la base de datos
+        try {
+            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            System.out.println("Conexión realizada.");
+
+            //realizar la consulta
+            String consultaSql = "select nombre from empleados where id ='" + idEmpleado + "' and claveAcceso ='" + claveAccesoEmpleado + "' ;";
+
+            //cosas del sql
+            Statement sentencia = conexion.createStatement();
+            ResultSet rs = sentencia.executeQuery(consultaSql);
+
+            //iterar sobre el result set y mostrar los resultados
+            while (rs.next()) {
+                //obtener el nombre
+                String nombreEmpleado = rs.getString("nombre");
+                System.out.println("Empleado encontrado: " + nombreEmpleado);
+            }
+
+            //realizar una pausa
+            pausar();
+
+            //cerrar la conexión
+            conexion.close();
+        } catch (SQLException e) {
+            System.err.println("\nError conectando a la base de datos: " + e.getMessage());
+            pausar(); //realizar una pausa si sale el error
+        }
     }
 
     /**
