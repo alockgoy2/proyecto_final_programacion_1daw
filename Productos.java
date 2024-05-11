@@ -1,4 +1,4 @@
-package proyectofinal.proyectofinal;
+
 
 public class Productos {
     //atributo(s)
@@ -6,6 +6,14 @@ public class Productos {
     Double precio;
     int cantidad;
     String categoria;
+
+    //constructor por parámetros
+    public Productos (String descripcion, Double precio, int cantidad, String categoria){
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.cantidad = cantidad;
+        this.categoria = categoria;
+    }
 
     //getters y setters
 

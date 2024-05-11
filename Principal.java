@@ -7,6 +7,7 @@ public class Principal {
 
     //cosas que se pueden usar en varios métodos
     static Scanner sc = new Scanner(System.in); //scanner
+    static ArrayList<Productos> listaProductos = new ArrayList<>(); //arraylist de los productos
     public static void main(String[] args) {
         //llamar al menú
         mostrarMenu();
@@ -138,7 +139,7 @@ public class Principal {
         //try-catch para realizar la conexión a la base de datos
         try {
             Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
-            System.out.println("Conexión realizada.");
+            //System.out.println("Conexión realizada.");
 
             //realizar la consulta
             String consultaSql = "select nombre from empleados where id ='" + idEmpleado + "' and claveAcceso ='" + claveAccesoEmpleado + "' ;";
@@ -146,16 +147,43 @@ public class Principal {
             //cosas del sql
             Statement sentencia = conexion.createStatement();
             ResultSet rs = sentencia.executeQuery(consultaSql);
+            String nombreEmpleado = "";
 
             //iterar sobre el result set y mostrar los resultados
             while (rs.next()) {
                 //obtener el nombre
-                String nombreEmpleado = rs.getString("nombre");
+                nombreEmpleado = rs.getString("nombre");
                 System.out.println("Empleado encontrado: " + nombreEmpleado);
             }
 
             //realizar una pausa
             pausar();
+
+            //comprobar que se ha logueado alguien correctamente, si es así, puede añadir un producto
+            if (nombreEmpleado != "") { //se ha encontrado un empleado
+                //pedir la descripción (nombre) del producto
+                System.out.print("\nPor favor, introduce la descripción del producto:");
+                String descripcionProducto = sc.next();
+
+                //pedir el precio del producto
+                System.out.print("\nPor favor, introduce el precio del producto: ");
+                double precioProducto = sc.nextDouble();
+
+                //pedir la cantidad de productos a añadir
+                System.out.print("\nPor favor, introduce la cantidad de productos que deseas añadir: ");
+                int cantidadProducto = sc.nextInt();
+
+                //pedir la categoria del producto
+                System.out.print("\nPor favor, escribe la categoría del producto: ");
+                String categoriaProducto = sc.next();
+
+                //añadir los datos a la lista de productos
+                Productos nuevoProducto = new Productos(descripcionProducto, precioProducto, cantidadProducto, categoriaProducto);
+                listaProductos.add(nuevoProducto);
+            } else { //no se ha encontrado un empleado
+                System.err.println("Identificador o contraseña incorrectos.");
+                pausar();
+            }
 
             //cerrar la conexión
             conexion.close();
