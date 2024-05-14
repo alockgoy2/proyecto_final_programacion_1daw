@@ -2,10 +2,10 @@
 
 public class Productos {
     //atributo(s)
-    String descripcion;
-    Double precio;
-    int cantidad;
-    String categoria;
+    private String descripcion;
+    private Double precio;
+    private int cantidad;
+    private String categoria;
 
     //constructor por parámetros
     public Productos (String descripcion, Double precio, int cantidad, String categoria){

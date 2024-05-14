@@ -8,6 +8,7 @@ public class Principal {
     //cosas que se pueden usar en varios métodos
     static Scanner sc = new Scanner(System.in); //scanner
     static ArrayList<Productos> listaProductos = new ArrayList<>(); //arraylist de los productos
+
     public static void main(String[] args) {
         //llamar al menú
         mostrarMenu();
@@ -202,9 +203,39 @@ public class Principal {
 
     /**
      * método para mostrar todos los productos
+     * aparentemente funciona
      */
     public static void mostrarProductos(){
+        //datos de conexión a la base de datos
+        String baseDatos = "jdbc:mysql://localhost:3306/productosProyectoFinal";
+        String usuario = "root";
+        String claveAcceso = "franceselquemehackee";
 
+        //intentar la conexión
+        try {
+            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            System.out.println("Conexión realizada.");
+            pausar();
+
+            //consulta sql
+            String consultaMostrarProductos = "select * from productos;";
+
+            //cosas del sql
+            Statement sentencia = conexion.createStatement();
+            ResultSet rs = sentencia.executeQuery(consultaMostrarProductos);
+
+            //mostrar los datos de los empleados
+            while (rs.next()) {
+                System.out.println("--------------------------------");
+                System.out.println("Categoría: " + rs.getString("categoria"));
+                System.out.println("Descripción: " + rs.getString("descripcion"));
+                System.out.println("Cantidad: " + rs.getInt("cantidad"));
+                System.out.println("Precio: " + rs.getDouble("precio"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error conectando a la base de datos: " + e.getMessage());
+            pausar();
+        }
     }
 
     /**
@@ -223,9 +254,38 @@ public class Principal {
 
     /**
      * método para mostrar a todos los clientes
+     * aparentemente funciona
      */
     public static void mostrarClientes(){
+        //datos de conexión a la base de datos
+        String baseDatos = "jdbc:mysql://localhost:3306/clientesProyectoFinal";
+        String usuario = "root";
+        String claveAcceso = "franceselquemehackee";
 
+        //intentar la conexión
+        try {
+            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            System.out.println("Conexión realizada.");
+            pausar();
+
+            //consulta sql
+            String consultaMostrarClientes = "select * from clientes;";
+
+            //cosas del sql
+            Statement sentencia = conexion.createStatement();
+            ResultSet rs = sentencia.executeQuery(consultaMostrarClientes);
+
+            //mostrar los datos de los empleados
+            while (rs.next()) {
+                System.out.println("--------------------------------");
+                System.out.println("Identificación: " + rs.getInt("identificacion"));
+                System.out.println("Nombre: " + rs.getString("nombre"));
+                System.out.println("¿VIP?: " + rs.getBoolean("vip"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error conectando a la base de datos: " + e.getMessage());
+            pausar();
+        }
     }
 
     /**
@@ -246,7 +306,40 @@ public class Principal {
      * método para mostrar a todos los empleados
      */
     public static void mostrarEmpleados(){
+        //datos de conexión a la base de datos
+        String baseDatos = "jdbc:mysql://localhost:3306/empleadosProyectoFinal";
+        String usuario = "root";
+        String claveAcceso = "franceselquemehackee";
 
+        //intentar la conexión
+        try {
+            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            System.out.println("Conexión realizada.");
+            pausar();
+
+            //consulta sql
+            String consultaMostrarEmpleados = "select * from empleados;";
+
+            //cosas del sql
+            Statement sentencia = conexion.createStatement();
+            ResultSet rs = sentencia.executeQuery(consultaMostrarEmpleados);
+
+            //mostrar los datos de los empleados
+            while (rs.next()) {
+                System.out.println("--------------------------------");
+                System.out.println("Identificador: " + rs.getInt("id"));
+                System.out.println("DNI: " + rs.getString("dni"));
+                System.out.println("Nombre: " + rs.getString("nombre"));
+                System.out.println("Apellidos: " + rs.getString("apellidos"));
+                System.out.println("Clave de acceso: " + rs.getString("claveAcceso"));
+                System.out.println("Salario: " + rs.getDouble("salario"));
+                System.out.println("Fecha de contratación: " + rs.getString("fechaContratacion"));
+                System.out.println("Fecha de despido: " + rs.getString("fechaDespido"));
+            }
+        } catch (SQLException e) {
+            System.err.println("Error conectando a la base de datos: " + e.getMessage());
+            pausar();
+        }
     }
 
     /**
@@ -258,8 +351,70 @@ public class Principal {
 
     /**
      * método para realizar una reclamación
+     * aparentemente funciona
      */
     public static void quieroReclamar(){
+        //archivo para las reclamaciones
+        String archivoReclamaciones = "reclamaciones.txt";
+
+        //activar el filewriter y el buffered writer
+        FileWriter reclamar = null;
+        BufferedWriter bufferReclamar = null;
+
+        //pedir los datos para la reclamación
+        System.out.print("\nPor favor, escribe tu nombre: ");
+        String nombreCliente = sc.nextLine(); //nombre del cliente
+
+        System.out.print("\nPor favor, escribe tus apellidos (al menos el primero): ");
+        String apellidosCliente = sc.nextLine(); //apellidos del cliente
+
+        System.out.print("\n(OPCIONAL) Escribe tu teléfono: ");
+        String telefonoCliente = sc.nextLine(); //teléfono del cliente
+
+        System.out.print("\nPor favor, escribe tu email: ");
+        String emailCliente = sc.nextLine(); //correo electrónico del cliente
+
+        System.out.print("\nPor favor, escribe el motivo de la reclamación (producto o problemas con el personal): ");
+        String motivoReclamacion = sc.nextLine(); //motivo de la reclamación
+
+        System.out.print("\nPor favor, describe el problema: ");
+        String descripcionProblema = sc.nextLine(); //descripción del problema
+
+        //intentar escribir los datos en el archivo
+        try {
+            //crear un filewriter con opción para añadir al final del archivo
+            reclamar = new FileWriter(archivoReclamaciones, true);
+
+            //crear un buffered writer para mejorar el rendimiento
+            bufferReclamar = new BufferedWriter(reclamar);
+
+            //escribir los datos
+            bufferReclamar.write("-------------------------------");
+            bufferReclamar.newLine();
+            bufferReclamar.write("Nombre: " + nombreCliente);
+            bufferReclamar.newLine();
+            bufferReclamar.write("Apellido(s): " + apellidosCliente);
+            bufferReclamar.newLine();
+            bufferReclamar.write("Teléfono: " + telefonoCliente);
+            bufferReclamar.newLine();
+            bufferReclamar.write("Correo electrónico: " + emailCliente);
+            bufferReclamar.newLine();
+            bufferReclamar.write("Motivo de la reclamación: " + motivoReclamacion);
+            bufferReclamar.newLine();
+            bufferReclamar.write("Descripción del problema: " + descripcionProblema);
+
+            //vaciar el buffer de salida
+            bufferReclamar.flush();
+
+            //cerrar el buffered writer
+            bufferReclamar.close();
+
+            System.out.println("\nReclamación guardada.");
+            pausar();
+        } catch (IOException e) {
+            System.err.println("Error realizando la reclamación: " + e.getMessage());
+            pausar();
+        }
 
     }
 }
