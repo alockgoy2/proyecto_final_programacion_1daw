@@ -4,7 +4,8 @@ use productosProyectoFinal;
 create table productos(
 categoria varchar(30) primary key,
 descripcion varchar (60),
-cantidad int,
+cantidad int, /* mínimo 5 para cada producto */
+marca varchar(30), /*intel o amd para procesadores, razer para periféricos por ejemplo, etc... */
 precio double);
 
 /* Categorías:
@@ -15,15 +16,16 @@ discos duros
 tarjetas graficas
 fuente de alimentacion
 tarjeta de red
-ordenadores montados */
-INSERT INTO productos (categoria, descripcion, cantidad, precio) VALUES
-('placas base', 'Placa base de alta calidad', 5, 150.00),
-('cpu', 'Procesador de última generación', 5, 300.00),
-('memoria ram', 'Memoria RAM DDR4 16GB', 5, 80.00),
-('discos duros', 'Disco duro SSD 1TB', 5, 120.00),
-('tarjetas graficas', 'Tarjeta gráfica de alto rendimiento', 5, 400.00),
-('fuente de alimentacion', 'Fuente de alimentación 650W', 5, 70.00),
-('tarjeta de red', 'Tarjeta de red Gigabit Ethernet', 5, 25.00),
-('ordenadores montados', 'Ordenador montado completo', 5, 1000.00);
+ordenadores montados 
+periféricos*/
 
-select * from productos;
+insert into productos values
+("placas base", "placa base para gaming", 10, "asus", 150.00),
+("cpu", "procesador de portátil", 5, "intel", 199.99),
+("memoria ram", "memoria ram ddr4 8gb", 15, "corsair", 60.00),
+("discos duros", "disco duro ssd 1tb", 20, "samsung", 120.00),
+("tarjetas graficas", "tarjeta gráfica rtx 3060", 8, "nvidia", 350.00),
+("fuente de alimentacion", "fuente de alimentación 750w", 12, "corsair", 85.00),
+("tarjeta de red", "tarjeta de red wifi 6", 7, "tp-link", 40.00),
+("ordenadores montados", "ordenador de sobremesa gaming", 6, "hp", 1000.00),
+("periféricos", "teclado mecánico", 15, "razer", 120.00);
