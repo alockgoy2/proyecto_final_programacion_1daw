@@ -8,6 +8,8 @@ public class Principal {
     //cosas que se pueden usar en varios métodos
     static Scanner sc = new Scanner(System.in); //scanner
     static ArrayList<Productos> listaProductos = new ArrayList<>(); //arraylist de los productos
+    static ArrayList<Empleados> listaEmpleados = new ArrayList<>(); //arraylist de los empleados
+    static ArrayList<Clientes> listaClientes = new ArrayList<>(); //arraylist de los clientes
 
     public static void main(String[] args) {
         //llamar al menú
@@ -41,7 +43,7 @@ public class Principal {
             System.out.println("-------------");
             System.out.println("10. Añadir al carrito.");
             System.out.println("11. Quiero hacer una reclamación.");
-            System.out.println("12. Salir.");
+            System.out.println("12. Salir y guardar cambios.");
 
             System.out.print("Por favor, elige una opción: ");
             opcion = sc.nextInt();
@@ -93,7 +95,10 @@ public class Principal {
                     break;
 
                 case 12:
-                    System.out.println("Saliendo del programa...");
+                    System.out.println("Saliendo del programa y guardando cambios...");
+                    guardarClientes();
+                    guardarEmpleados();
+                    guardarProductos();
                     break;
             
                 default:
@@ -242,14 +247,52 @@ public class Principal {
      * método para registrar un cliente
      */
     public static void registrarCliente(){
+        //pedir los datos del cliente
+        System.out.println("Por favor, introduce los datos del cliente: ");
+        System.out.print("\nNombre: ");
+        String nombreCliente = sc.nextLine(); //pedir el nombre
+        System.out.print("\nIdentificador: ");
+        int idCliente = sc.nextInt();
+        System.out.print("\n¿VIP? (1 = si, 0 = no)");
+        int comprobarVip = sc.nextInt();
 
+        boolean clienteVip = false;
+
+        //comprobar si es un cliente vip
+        if (comprobarVip == 1) {
+            clienteVip = true;
+        }
+
+        //crear el objeto de cliente y añadirlo a la lista
+        Clientes nuevoCliente = new Clientes(idCliente, nombreCliente, clienteVip);
+        listaClientes.add(nuevoCliente);
     }
 
     /**
      * método para eliminar a un cliente
      */
     public static void eliminarCliente(){
+        //pedir el ID del cliente a eliminar
+        System.out.print("Por favor, escribe el ID del cliente que quieres eliminar: ");
+        int idClienteEliminar = sc.nextInt();
 
+        //buscar el cliente
+        Iterator<Clientes> iterador = listaClientes.iterator();
+        boolean clienteEliminado = false; //variable booleana para facilitar el mensaje de que ha sido eliminado
+        while (iterador.hasNext()) {
+            Clientes clienteEliminar = iterador.next();
+            if (clienteEliminar.getIdentificacion() == idClienteEliminar) { //comprobar que el identificador coincide
+                iterador.remove(); //eliminar al cliente
+                System.out.println("El cliente con el identificador " + idClienteEliminar + " ha sido eliminado.");
+                clienteEliminado = true;
+                break;
+            }
+        }
+
+        //si no se ha encontrado un cliente con ese id
+        if (!clienteEliminado) {
+            System.err.println("No se ha encontrado un cliente con ese identificador.");
+        }
     }
 
     /**
@@ -417,4 +460,26 @@ public class Principal {
         }
 
     }
+
+    /**
+     * método para guardar los empleados al cerrar el programa
+     */
+    public static void guardarEmpleados(){
+
+    }
+
+    /**
+     * método para guardar los clientes al cerrar el programa
+     */
+    public static void guardarClientes(){
+
+    }
+
+    /**
+     * método para guardar los productos al cerrar el programa
+     */
+    public static void guardarProductos(){
+
+    }
+
 }
