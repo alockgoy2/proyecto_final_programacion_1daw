@@ -11,6 +11,11 @@ public class Principal {
     static ArrayList<Empleados> listaEmpleados = new ArrayList<>(); //arraylist de los empleados
     static ArrayList<Clientes> listaClientes = new ArrayList<>(); //arraylist de los clientes
 
+    //datos de conexión a la base de datos
+    static String baseDatos = "jdbc:mysql://localhost:3306/proyectoFinalProgramacion";
+    static String usuario = "root";
+    static String claveAcceso = "franceselquemehackee";
+
     public static void main(String[] args) {
         //llamar al menú
         mostrarMenu();
@@ -131,10 +136,6 @@ public class Principal {
      * si esta consulta devuelve un resultado se podrá añadir un producto
      */
     public static void anadirProducto(){
-        //datos de conexión a la base de datos
-        String baseDatos = "jdbc:mysql://localhost:3306/empleadosProyectoFinal";
-        String usuario = "root";
-        String claveAcceso = "franceselquemehackee";
 
         //pedir el logueo del empleado
         System.out.print("\nPor favor, introduce tu ID de empleado: ");
@@ -168,7 +169,7 @@ public class Principal {
             //comprobar que se ha logueado alguien correctamente, si es así, puede añadir un producto
             if (nombreEmpleado != "") { //se ha encontrado un empleado
                 //pedir la descripción (nombre) del producto
-                System.out.print("\nPor favor, introduce la descripción del producto:");
+                System.out.print("\nPor favor, introduce la descripción del producto: ");
                 String descripcionProducto = sc.next();
 
                 //pedir el precio del producto
@@ -211,10 +212,6 @@ public class Principal {
      * aparentemente funciona
      */
     public static void mostrarProductos(){
-        //datos de conexión a la base de datos
-        String baseDatos = "jdbc:mysql://localhost:3306/productosProyectoFinal";
-        String usuario = "root";
-        String claveAcceso = "franceselquemehackee";
 
         //intentar la conexión
         try {
@@ -300,10 +297,6 @@ public class Principal {
      * aparentemente funciona
      */
     public static void mostrarClientes(){
-        //datos de conexión a la base de datos
-        String baseDatos = "jdbc:mysql://localhost:3306/clientesProyectoFinal";
-        String usuario = "root";
-        String claveAcceso = "franceselquemehackee";
 
         //intentar la conexión
         try {
@@ -349,10 +342,6 @@ public class Principal {
      * método para mostrar a todos los empleados
      */
     public static void mostrarEmpleados(){
-        //datos de conexión a la base de datos
-        String baseDatos = "jdbc:mysql://localhost:3306/empleadosProyectoFinal";
-        String usuario = "root";
-        String claveAcceso = "franceselquemehackee";
 
         //intentar la conexión
         try {
