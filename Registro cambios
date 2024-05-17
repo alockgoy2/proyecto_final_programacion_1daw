@@ -1,3 +1,57 @@
+Enlace repositorio: https://github.com/alockgoy2/proyecto_final_programacion_1daw 
+
 26/04/2024
--	Creada clase productos con sus atributos, sus “setters” y “getters” y su “toString”.
--	Creada clase principal, de momento cuenta con la opción de mostrar el menú y pedir una opción al usuario.
+Creada clase productos con sus atributos, sus “setters” y “getters” y su “toString”.
+Creada clase principal, de momento cuenta con la opción de mostrar el menú y pedir una opción al usuario.
+
+10/05/2024
+Creado el archivo “.sql” de los empleados, con sus “atributos” asignados y varios valores asignados.
+Ligeras modificaciones en los “import” del archivo “Principal.java”.
+Ligeras modificaciones a algunas “llamadas” antes del método principal del archivo “Principal.java”.
+Modificado el método “anadirProductos” del archivo “Principal.java”.
+Añadidos los “drivers” para poder usar SQL desde Java.
+Usados los mismos archivos en otra carpeta por un error con SQL.
+
+11/05/2024
+Eliminado “package ‘nombre_paquete’” del archivo “Productos.java”.
+Añadido el Array List de productos en “Principal.java”.
+Modificado el método de añadir productos del archivo “Principal.java”.
+Añadido constructor por parámetros en “Productos.java”.
+
+13/05/2024
+Creada la base de datos de los clientes
+
+14/05/2024
+Creada la base de datos de los productos
+“Creado” el método “quieroReclamar” del archivo “Principal.java”.
+“Creado” el método “mostrarEmpleados” del archivo “Principal.java”.
+“Creado” el método “mostrarClientes” del archivo “Principal.java”.
+Creada la clase “Persona” de la que heredarán la clase “Empleados” y la clase “Clientes”.
+“Creado” el método “mostrarProductos” del archivo “Principal.java”.
+Modificada la visibilidad de los atributos de la clase “Productos”.
+
+15/05/2024
+Modificada la base de datos de los productos (faltaban las marcas).
+Creada la clase “Empleados”.
+Creada la clase “Clientes”.
+Modificada la clase “Principal” (nombre de la última opción y añadidos arraylist de empleados y clientes).
+Añadidos los métodos “guardarEmpleados”, “guardarClientes” y “guardarProductos” en la clase “Principal”.
+Modificado el método “registrarCliente” de la clase “Principal”.
+Modificado el método “eliminarCliente” de la clase “Principal”.
+
+
+16/05/2024
+Unificadas todas las bases de datos en una sola.
+Creados los atributos en la clase “Principal” para conectar a la base de datos.
+Eliminados datos de conexión a bases de datos separadas de “Principal.java”.
+Eliminadas bases de datos por separado.
+
+17/05/2024
+Modificada la clase “Empleados” (faltaban varios atributos).
+Modificado el método “anadirEmpleados” de la clase “Principal”.
+Modificado el método “eliminarEmpleados” de la clase “Principal”.
+Modificado el método “eliminarClientes” de la clase “Principal”.
+Modificada la base de datos del proyecto (problemas con los productos).
+Modificado el método “eliminarProductos” de la clase “Principal”.
+Modificada la clase “Productos” (añadido atributo ID).
+
