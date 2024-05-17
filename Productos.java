@@ -3,23 +3,23 @@
 public class Productos {
     //atributo(s)
     private int id;
-    private String descripcion;
-    private Double precio;
-    private int cantidad;
     private String categoria;
+    private String descripcion;
+    private int cantidad;
+    private String marca;
+    private double precio;
 
     //constructor por parámetros
-    public Productos (int id, String descripcion, Double precio, int cantidad, String categoria){
+    public Productos (int id, String categoria, String descripcion, int cantidad, String marca, double precio){
         this.id = id;
-        this.descripcion = descripcion;
-        this.precio = precio;
-        this.cantidad = cantidad;
         this.categoria = categoria;
+        this.descripcion = descripcion;
+        this.cantidad = cantidad;
+        this.marca = marca;
+        this.precio = precio;
     }
 
     //getters y setters
-
-
 
     public int getId() {
         return this.id;
@@ -27,6 +27,14 @@ public class Productos {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getCategoria() {
+        return this.categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     public String getDescripcion() {
@@ -37,14 +45,6 @@ public class Productos {
         this.descripcion = descripcion;
     }
 
-    public Double getPrecio() {
-        return this.precio;
-    }
-
-    public void setPrecio(Double precio) {
-        this.precio = precio;
-    }
-
     public int getCantidad() {
         return this.cantidad;
     }
@@ -53,22 +53,30 @@ public class Productos {
         this.cantidad = cantidad;
     }
 
-    public String getCategoria() {
-        return this.categoria;
+    public String getMarca() {
+        return this.marca;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
-    
+
+    public double getPrecio() {
+        return this.precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
 
     //método to string
     @Override
     public String toString() {
-        return "Productos [descripcion=" + descripcion + ", precio=" + precio + ", cantidad=" + cantidad
-                + ", categoria=" + categoria + "]";
+        return "Productos [id=" + id + ", categoria=" + categoria + ", descripcion=" + descripcion + ", cantidad="
+                + cantidad + ", marca=" + marca + ", precio=" + precio + "]";
     }
 
 
+    
     
 }

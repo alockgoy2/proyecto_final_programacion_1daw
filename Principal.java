@@ -99,10 +99,17 @@ public class Principal {
                     break;
 
                 case 12:
-                    System.out.println("Saliendo del programa y guardando cambios...");
+                    System.out.println("Guardando clientes...");
                     guardarClientes();
+                    pausar();
+                    System.out.println("Guardando empleados...");
                     guardarEmpleados();
+                    pausar();
+                    System.out.println("Guardando productos...");
                     guardarProductos();
+                    pausar();
+                    System.out.println("Saliendo del programa...");
+                    pausar();
                     break;
             
                 default:
@@ -167,25 +174,37 @@ public class Principal {
 
             //comprobar que se ha logueado alguien correctamente, si es así, puede añadir un producto
             if (nombreEmpleado != "") { //se ha encontrado un empleado
-                //pedir la descripción (nombre) del producto
-                System.out.print("\nPor favor, introduce la descripción del producto: ");
-                String descripcionProducto = sc.next();
 
-                //pedir el precio del producto
-                System.out.print("\nPor favor, introduce el precio del producto: ");
-                double precioProducto = sc.nextDouble();
-
-                //pedir la cantidad de productos a añadir
-                System.out.print("\nPor favor, introduce la cantidad de productos que deseas añadir: ");
-                int cantidadProducto = sc.nextInt();
+                //pedir el identificador del producto
+                System.out.print("\nPor favor, introduce el ID del producto: ");
+                int idProducto = sc.nextInt();
 
                 //pedir la categoria del producto
                 System.out.print("\nPor favor, escribe la categoría del producto: ");
                 String categoriaProducto = sc.next();
 
+                //pedir la descripción (nombre) del producto
+                System.out.print("\nPor favor, introduce la descripción del producto: ");
+                sc.nextLine();
+                String descripcionProducto = sc.nextLine();
+
+                //pedir la cantidad de productos a añadir
+                System.out.print("\nPor favor, introduce la cantidad de productos que deseas añadir: ");
+                int cantidadProducto = sc.nextInt();
+
+                //pedir la marca del producto
+                System.out.print("\nPor favor, escribe la marca del producto: ");
+                sc.nextLine();
+                String marcaProducto = sc.nextLine();
+
+                //pedir el precio del producto
+                System.out.print("\nPor favor, introduce el precio del producto: ");
+                double precioProducto = sc.nextDouble();
+
                 //añadir los datos a la lista de productos
-                Productos nuevoProducto = new Productos(descripcionProducto, precioProducto, cantidadProducto, categoriaProducto);
+                Productos nuevoProducto = new Productos(idProducto, categoriaProducto, descripcionProducto, cantidadProducto, marcaProducto, precioProducto);
                 listaProductos.add(nuevoProducto);
+
             } else { //no se ha encontrado un empleado
                 System.err.println("Identificador o contraseña incorrectos.");
                 pausar();
@@ -273,7 +292,6 @@ public class Principal {
         //intentar la conexión
         try {
             Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
-            System.out.println("Conexión realizada.");
             pausar();
 
             //consulta sql
@@ -286,6 +304,7 @@ public class Principal {
             //mostrar los datos de los empleados
             while (rs.next()) {
                 System.out.println("--------------------------------");
+                System.out.println("ID: " + rs.getInt("id"));
                 System.out.println("Categoría: " + rs.getString("categoria"));
                 System.out.println("Descripción: " + rs.getString("descripcion"));
                 System.out.println("Cantidad: " + rs.getInt("cantidad"));
@@ -303,12 +322,14 @@ public class Principal {
     public static void registrarCliente(){
         //pedir los datos del cliente
         System.out.println("Por favor, introduce los datos del cliente: ");
-        System.out.print("\nNombre: ");
-        String nombreCliente = sc.nextLine(); //pedir el nombre
         System.out.print("\nIdentificador: ");
-        int idCliente = sc.nextInt();
-        System.out.print("\n¿VIP? (1 = si, 0 = no)");
-        int comprobarVip = sc.nextInt();
+        int idCliente = sc.nextInt(); //pedir el id del cliente
+        System.out.print("\nNombre: ");
+        sc.nextLine();
+        String nombreCliente = sc.nextLine(); //pedir el nombre
+        
+        System.out.print("\n¿VIP? (1 = si, 0 = no): ");
+        int comprobarVip = sc.nextInt(); //preguntar si es vip
 
         boolean clienteVip = false;
 
@@ -418,6 +439,7 @@ public class Principal {
         Empleados nuevoEmpleado = new Empleados(idEmpleado, dniEmpleado, nombreEmpleado, apellidosEmpleado, claveAcceso, sueldoEmpleado, fechaContratacion, fechaDespido);
         listaEmpleados.add(nuevoEmpleado);
         System.out.println("Empleado añadido.");
+
     }
 
     /**
@@ -483,7 +505,7 @@ public class Principal {
                 System.out.println("DNI: " + rs.getString("dni"));
                 System.out.println("Nombre: " + rs.getString("nombre"));
                 System.out.println("Apellidos: " + rs.getString("apellidos"));
-                System.out.println("Clave de acceso: " + rs.getString("claveAcceso"));
+                System.out.println("Clave de acceso: " + "*************");
                 System.out.println("Salario: " + rs.getDouble("salario"));
                 System.out.println("Fecha de contratación: " + rs.getString("fechaContratacion"));
                 System.out.println("Fecha de despido: " + rs.getString("fechaDespido"));
@@ -499,6 +521,42 @@ public class Principal {
      */
     public static void quieroComprar(){
 
+        //variable para seguir comprando
+        String seguirComprando = "no";
+
+        do {
+            //mostrar primero el stock disponible
+            mostrarProductos();
+
+            //pedir el id del producto que se quiere comprar
+            System.out.print("\nPor favor, introduce el ID del producto que quieres comprar: ");
+            int idProducto = sc.nextInt();
+
+            //pedir la cantidad de producto que se desea comprar
+            System.out.print("\nPor favor, introduce la cantidad de productos que quieres comprar: ");
+            int cantidadProducto = sc.nextInt();
+
+            //comprobar que hay unidades disponibles
+            int cantidadDisponible = 0;
+
+                //intentar la conexión con la base de datos
+                try {
+                    //MODIFICAR EL TIPO DE EXCEPCIÓN
+                    //MODIFICAR EL TIPO DE EXCEPCIÓN
+                    //MODIFICAR EL TIPO DE EXCEPCIÓN
+                    //MODIFICAR EL TIPO DE EXCEPCIÓN
+                    //MODIFICAR EL TIPO DE EXCEPCIÓN
+                    //MODIFICAR EL TIPO DE EXCEPCIÓN
+                    //MODIFICAR EL TIPO DE EXCEPCIÓN
+                    //MODIFICAR EL TIPO DE EXCEPCIÓN
+                } catch (Exception e) {
+                    System.err.println("Error comprobando el stock disponible: " + e.getMessage());
+                }
+            //preguntar si se desea seguir comprando
+            System.out.print("¿Seguir comprando? (si,no): ");
+            seguirComprando = sc.next();
+        } while (!seguirComprando.equalsIgnoreCase("no"));
+        //hacer todo lo anterior mientras no se especifique el deseo de dejar de comprar
     }
 
     /**
@@ -574,21 +632,83 @@ public class Principal {
      * método para guardar los empleados al cerrar el programa
      */
     public static void guardarEmpleados(){
+        //intentar la conexión con la base de datos
+        try {
+            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            String consultaInsertarEmpleados = "insert into empleados values (?, ?, ?, ?, ?, ?, ?, ?);";
 
+            //intentar insertar los empleados
+            try (PreparedStatement ps = conexion.prepareStatement(consultaInsertarEmpleados)) {
+                for (Empleados empleado : listaEmpleados) {
+                    ps.setInt(1, empleado.getIdentificacion());
+                    ps.setString(2, empleado.getDni());
+                    ps.setString(3, empleado.getNombre());
+                    ps.setString(4, empleado.getApellidos());
+                    ps.setString(5, empleado.getClaveAcceso());  
+                    ps.setDouble(6, empleado.getSueldo());
+                    ps.setString(7, empleado.getContratacion());
+                    ps.setString(8, empleado.getDespido());
+                    ps.executeUpdate();
+                }
+            } catch (Exception ex){
+                System.err.println("\nError guardando los empleados en la base de datos: " + ex.getMessage());
+            }
+        } catch (SQLException e) {
+            System.err.println("Error guardando los empleados en la base de datos: " + e.getMessage());
+        }
     }
 
     /**
      * método para guardar los clientes al cerrar el programa
      */
     public static void guardarClientes(){
+        //intentar la conexión con la base de datos
+        try {
+            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            String consultaInsertarClientes = "insert into clientes values (?, ?, ?);";
 
+            //intentar insertar los clientes
+            try (PreparedStatement ps = conexion.prepareStatement(consultaInsertarClientes)) {
+                for (Clientes cliente : listaClientes) {
+                    ps.setInt(1, cliente.getIdentificacion());
+                    ps.setString(2, cliente.getNombre());
+                    ps.setBoolean(3, cliente.getVip());
+                    ps.executeUpdate();
+                }
+            } catch (Exception ex){
+                System.err.println("Error guardando los clientes en la base de datos: " + ex.getMessage());
+            }
+        } catch (SQLException e) {
+            System.err.println("\nError guardando los clientes en la base de datos: " + e.getMessage());
+        }
     }
 
     /**
      * método para guardar los productos al cerrar el programa
      */
     public static void guardarProductos(){
+        //intentar la conexión con la base de datos
+        try {
+            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            String consultaInsertarProductos = "insert into productos values (?, ?, ?, ?, ?, ?);";
 
+            //intentar insertar los productos
+            try (PreparedStatement ps = conexion.prepareStatement(consultaInsertarProductos)) {
+                for (Productos producto : listaProductos) {
+                    ps.setInt(1, producto.getId());
+                    ps.setString(2, producto.getCategoria());
+                    ps.setString(3, producto.getDescripcion());
+                    ps.setInt(4, producto.getCantidad());
+                    ps.setString(5, producto.getMarca());  
+                    ps.setDouble(6, producto.getPrecio());
+                    ps.executeUpdate();
+                }
+            } catch (Exception ex){
+                System.err.println("\nError guardando los productos en la base de datos: " + ex.getMessage());
+            }
+        } catch (SQLException e) {
+            System.err.println("\nError guardando los productos en la base de datos: " + e.getMessage());
+        }
     }
 
 }

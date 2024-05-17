@@ -8,7 +8,7 @@ public class Empleados extends Persona{ //esta clase hereda de persona
     private double sueldo;
     
     //constructor
-    public Empleados (int identificacion, String dni, String nombre, String apellidos, String claveAcceso, double sueldo, String contratacion, String despido){
+    public Empleados (int identificacion, String nombre, String dni, String apellidos, String claveAcceso, double sueldo, String contratacion, String despido){
         super(identificacion, nombre);
         this.apellidos = apellidos;
         this.dni = dni;
@@ -66,6 +66,13 @@ public class Empleados extends Persona{ //esta clase hereda de persona
 
     public void setSueldo(double sueldo) {
         this.sueldo = sueldo;
+    }
+
+    //método to string
+    @Override
+    public String toString() {
+        return "Empleados [dni=" + dni + ", apellidos=" + apellidos + ", claveAcceso=" + claveAcceso + ", contratacion="
+                + contratacion + ", despido=" + despido + ", sueldo=" + sueldo + "]";
     }
 
     
