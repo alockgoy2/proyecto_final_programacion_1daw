@@ -2,13 +2,15 @@
 
 public class Productos {
     //atributo(s)
+    private int id;
     private String descripcion;
     private Double precio;
     private int cantidad;
     private String categoria;
 
     //constructor por parámetros
-    public Productos (String descripcion, Double precio, int cantidad, String categoria){
+    public Productos (int id, String descripcion, Double precio, int cantidad, String categoria){
+        this.id = id;
         this.descripcion = descripcion;
         this.precio = precio;
         this.cantidad = cantidad;
@@ -17,6 +19,15 @@ public class Productos {
 
     //getters y setters
 
+
+
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getDescripcion() {
         return this.descripcion;
@@ -49,6 +60,7 @@ public class Productos {
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
+    
 
     //método to string
     @Override

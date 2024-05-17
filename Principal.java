@@ -25,8 +25,7 @@ public class Principal {
      * método para mostrar el menú
      */
     public static void mostrarMenu(){
-        //declaración de variables y activación de scanner
-        Scanner sc = new Scanner(System.in);
+        //declaración de variables
         int opcion = 0;
 
         //bucle principal
@@ -35,7 +34,7 @@ public class Principal {
             System.out.println("OPCIONES:");
             System.out.println("-------------");
             System.out.println("1. Añadir productos.");
-            System.out.println("2. Eliminar productos.");
+            System.out.println("2. Eliminar productos por marca.");
             System.out.println("3. Mostrar todos los productos.");
             System.out.println("-------------");
             System.out.println("4. Registrar un cliente.");
@@ -202,11 +201,69 @@ public class Principal {
 
     /**
      * método para eliminar un producto
+     * 
      */
     public static void eliminarProducto(){
 
-    }
+        //pedir el logueo del empleado
+        System.out.print("\nPor favor, introduce tu ID de empleado: ");
+        int idEmpleado = sc.nextInt();
+        System.out.print("Por favor, introduce tu contraseña: ");
+        String claveAccesoEmpleado = sc.next();
 
+         //try-catch para realizar la conexión a la base de datos
+         try {
+            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            //System.out.println("Conexión realizada.");
+
+            //realizar la consulta
+            String consultaSql = "select nombre from empleados where id ='" + idEmpleado + "' and claveAcceso ='" + claveAccesoEmpleado + "' ;";
+
+            //cosas del sql
+            Statement sentencia = conexion.createStatement();
+            ResultSet rs = sentencia.executeQuery(consultaSql);
+            String nombreEmpleado = "";
+
+            //iterar sobre el result set y mostrar los resultados
+            while (rs.next()) {
+                //obtener el nombre
+                nombreEmpleado = rs.getString("nombre");
+                System.out.println("Empleado encontrado: " + nombreEmpleado);
+            }
+
+            //comprobar que se ha logueado alguien correctamente, si es así, puede añadir un producto
+            if (nombreEmpleado != "") { //se ha encontrado un empleado
+                //pedir la marca cuyos productos deseas eliminar
+                System.out.print("\nPor favor, escribe la marca cuyos productos deseas eliminar: ");
+                sc.nextLine();
+                String marcaProductoEliminar = sc.nextLine();
+
+                //consulta sql
+                String consultaEliminarMarca = "delete from productos where marca = '" + marcaProductoEliminar + "';";
+
+                // cosas del sql
+                sentencia = conexion.createStatement();
+                int filasAfectadas = sentencia.executeUpdate(consultaEliminarMarca);   
+
+                if (filasAfectadas > 0) {
+                    System.out.println("Marca eliminada.");
+                } else {
+                    System.out.println("No se encontró una marca con ese nombre.");
+                }
+
+            } else {
+                System.err.println("Identificador o contraseña incorrectos.");
+            }
+
+            //realizar una pausa
+            pausar();
+
+        //pedir la marca del producto que se desea eliminar
+        System.out.print("\nPor favor, escribe la marca cuyos productos deseas eliminar: ");
+    } catch (SQLException e){
+        System.err.println("Error conectando a la base de datos: " + e.getMessage());
+    }
+}
     /**
      * método para mostrar todos los productos
      * aparentemente funciona
@@ -267,28 +324,36 @@ public class Principal {
 
     /**
      * método para eliminar a un cliente
+     * NOTA: Este método elimina al empleado de la base de datos, no del arraylist
      */
     public static void eliminarCliente(){
         //pedir el ID del cliente a eliminar
         System.out.print("Por favor, escribe el ID del cliente que quieres eliminar: ");
         int idClienteEliminar = sc.nextInt();
 
-        //buscar el cliente
-        Iterator<Clientes> iterador = listaClientes.iterator();
-        boolean clienteEliminado = false; //variable booleana para facilitar el mensaje de que ha sido eliminado
-        while (iterador.hasNext()) {
-            Clientes clienteEliminar = iterador.next();
-            if (clienteEliminar.getIdentificacion() == idClienteEliminar) { //comprobar que el identificador coincide
-                iterador.remove(); //eliminar al cliente
-                System.out.println("El cliente con el identificador " + idClienteEliminar + " ha sido eliminado.");
-                clienteEliminado = true;
-                break;
-            }
-        }
+        //intentar la conexión
+        try {
+            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            System.out.println("Conexión realizada.");
+            pausar();
 
-        //si no se ha encontrado un cliente con ese id
-        if (!clienteEliminado) {
-            System.err.println("No se ha encontrado un cliente con ese identificador.");
+            //sentencia sql
+            String consultaEliminarCliente = "delete from clientes where identificacion = " + idClienteEliminar + ";";
+
+            // cosas del sql
+            Statement sentencia = conexion.createStatement();
+            int filasAfectadas = sentencia.executeUpdate(consultaEliminarCliente);
+
+            if (filasAfectadas > 0) {
+                System.out.println("Cliente eliminado.");
+            } else {
+                System.out.println("No se encontró ningún cliente con el id proporcionado.");
+            }
+
+            pausar();
+        } catch (SQLException e) {
+            System.err.println("Error conectando a la base de datos: " + e.getMessage());
+            pausar();
         }
     }
 
@@ -328,13 +393,68 @@ public class Principal {
      * método para añadir a un empleado
      */
     public static void anadirEmpleado(){
+        //pedir los datos del empleado
+        System.out.println("Por favor, introduce los datos del empleado: ");
+        System.out.print("\nId de empleado: ");
+        int idEmpleado = sc.nextInt();
+        System.out.print("\nNombre del empleado: ");
+        sc.nextLine();
+        String nombreEmpleado = sc.nextLine();
+        System.out.print("\nApellidos del empleado: ");
+        String apellidosEmpleado = sc.nextLine();
+        System.out.print("\nDNI del empleado: ");
+        String dniEmpleado = sc.nextLine();
+        System.out.print("\nClave de acceso (no puede contener espacios): ");
+        String claveAcceso = sc.next();
+        System.out.print("\nSueldo del empleado: ");
+        double sueldoEmpleado = sc.nextDouble();
+        System.out.print("\nFecha de contratación (dia/mes/año): ");
+        sc.nextLine();
+        String fechaContratacion = sc.nextLine();
+        System.out.print("\nFecha de despido (opcional): ");
+        String fechaDespido = sc.nextLine();
 
+        //crear el objeto y añadirlo a la lista
+        Empleados nuevoEmpleado = new Empleados(idEmpleado, dniEmpleado, nombreEmpleado, apellidosEmpleado, claveAcceso, sueldoEmpleado, fechaContratacion, fechaDespido);
+        listaEmpleados.add(nuevoEmpleado);
+        System.out.println("Empleado añadido.");
     }
 
     /**
      * método para eliminar a un empleado
+     * NOTA: Este método elimina al empleado de la base de datos, no del arraylist
      */
     public static void eliminarEmpleado(){
+        //pedir el id del empleado que se quiere eliminar
+        System.out.print("Por favor, introduce el identificador del empleado que quieres eliminar: ");
+        int idEmpleado = sc.nextInt();
+
+        //intentar la conexión
+        try {
+            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            System.out.println("Conexión realizada.");
+            pausar();
+
+            //sentencia sql
+            String consultaEliminarEmpleado = "delete from empleados where id = " + idEmpleado + ";";
+
+            // cosas del sql
+            Statement sentencia = conexion.createStatement();
+            int filasAfectadas = sentencia.executeUpdate(consultaEliminarEmpleado);
+
+            if (filasAfectadas > 0) {
+                System.out.println("Empleado eliminado.");
+            } else {
+                System.out.println("No se encontró ningún empleado con el id proporcionado.");
+            }
+
+            pausar();
+        } catch (SQLException e) {
+            System.err.println("Error conectando a la base de datos: " + e.getMessage());
+            pausar();
+        }
+
+        
 
     }
 

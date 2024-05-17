@@ -1,18 +1,48 @@
 public class Empleados extends Persona{ //esta clase hereda de persona
     //atributos de la clase
+    private String dni;
+    private String apellidos;
+    private String claveAcceso;
     private String contratacion;
     private String despido;
     private double sueldo;
     
     //constructor
-    public Empleados (int identificacion, String nombre, String contratacion, String despido, double sueldo){
+    public Empleados (int identificacion, String dni, String nombre, String apellidos, String claveAcceso, double sueldo, String contratacion, String despido){
         super(identificacion, nombre);
+        this.apellidos = apellidos;
+        this.dni = dni;
+        this.claveAcceso = claveAcceso;
+        this.sueldo = sueldo;
         this.contratacion = contratacion;
         this.despido = despido;
-        this.sueldo = sueldo;
     }
     
     //getters y setters
+
+    public String getDni() {
+        return this.dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public String getApellidos() {
+        return this.apellidos;
+    }
+
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
+    }
+
+    public String getClaveAcceso() {
+        return this.claveAcceso;
+    }
+
+    public void setClaveAcceso(String claveAcceso) {
+        this.claveAcceso = claveAcceso;
+    }
 
     public String getContratacion() {
         return this.contratacion;
@@ -37,6 +67,8 @@ public class Empleados extends Persona{ //esta clase hereda de persona
     public void setSueldo(double sueldo) {
         this.sueldo = sueldo;
     }
+
+    
 
     
 }
