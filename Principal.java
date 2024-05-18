@@ -8,13 +8,12 @@ public class Principal {
     //cosas que se pueden usar en varios métodos
     static Scanner sc = new Scanner(System.in); //scanner
     static ArrayList<Productos> listaProductos = new ArrayList<>(); //arraylist de los productos
+    static ArrayList<Carrito> carrito = new ArrayList<>(); //lista del carrito al momento de realizar la compra
     static ArrayList<Empleados> listaEmpleados = new ArrayList<>(); //arraylist de los empleados
     static ArrayList<Clientes> listaClientes = new ArrayList<>(); //arraylist de los clientes
 
     //datos de conexión a la base de datos
-    static String baseDatos = "jdbc:mysql://localhost:3306/proyectoFinalProgramacion";
-    static String usuario = "root";
-    static String claveAcceso = "franceselquemehackee";
+    static Connection conexion;
 
     public static void main(String[] args) {
         //llamar al menú
@@ -36,18 +35,19 @@ public class Principal {
             System.out.println("1. Añadir productos.");
             System.out.println("2. Eliminar productos por marca.");
             System.out.println("3. Mostrar todos los productos.");
+            System.out.println("4. Añadir stock.");
             System.out.println("-------------");
-            System.out.println("4. Registrar un cliente.");
-            System.out.println("5. Eliminar un cliente.");
-            System.out.println("6. Mostrar todos los clientes.");
+            System.out.println("5. Registrar un cliente.");
+            System.out.println("6. Eliminar un cliente.");
+            System.out.println("7. Mostrar todos los clientes.");
             System.out.println("-------------");
-            System.out.println("7. Añadir a un empleado.");
-            System.out.println("8. Eliminar a un empleado.");
-            System.out.println("9. Mostrar todos los empleados.");
+            System.out.println("8. Añadir a un empleado.");
+            System.out.println("9. Eliminar a un empleado.");
+            System.out.println("10. Mostrar todos los empleados.");
             System.out.println("-------------");
-            System.out.println("10. Añadir al carrito.");
-            System.out.println("11. Quiero hacer una reclamación.");
-            System.out.println("12. Salir y guardar cambios.");
+            System.out.println("11. Añadir al carrito.");
+            System.out.println("12. Quiero hacer una reclamación.");
+            System.out.println("13. Salir y guardar cambios.");
 
             System.out.print("Por favor, elige una opción: ");
             opcion = sc.nextInt();
@@ -67,38 +67,42 @@ public class Principal {
                     break;
 
                 case 4:
-                    registrarCliente();
+                    anadirStock();
                     break;
 
                 case 5:
-                    eliminarCliente();
+                    registrarCliente();
                     break;
 
                 case 6:
-                    mostrarClientes();
+                    eliminarCliente();
                     break;
 
                 case 7:
-                    anadirEmpleado();
+                    mostrarClientes();
                     break;
 
                 case 8:
-                    eliminarEmpleado();
+                    anadirEmpleado();
                     break;
 
                 case 9:
-                    mostrarEmpleados();
+                    eliminarEmpleado();
                     break;
 
                 case 10:
-                    quieroComprar();
+                    mostrarEmpleados();
                     break;
 
                 case 11:
-                    quieroReclamar();
+                    quieroComprar();
                     break;
 
                 case 12:
+                    quieroReclamar();
+                    break;
+
+                case 13:
                     System.out.println("Guardando clientes...");
                     guardarClientes();
                     pausar();
@@ -151,7 +155,7 @@ public class Principal {
 
         //try-catch para realizar la conexión a la base de datos
         try {
-            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            conexion = Conexion.getConexion();
             //System.out.println("Conexión realizada.");
 
             //realizar la consulta
@@ -232,7 +236,7 @@ public class Principal {
 
          //try-catch para realizar la conexión a la base de datos
          try {
-            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            conexion = Conexion.getConexion();
             //System.out.println("Conexión realizada.");
 
             //realizar la consulta
@@ -291,7 +295,7 @@ public class Principal {
 
         //intentar la conexión
         try {
-            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            conexion = Conexion.getConexion();
             pausar();
 
             //consulta sql
@@ -354,7 +358,7 @@ public class Principal {
 
         //intentar la conexión
         try {
-            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            conexion = Conexion.getConexion();
             System.out.println("Conexión realizada.");
             pausar();
 
@@ -386,7 +390,7 @@ public class Principal {
 
         //intentar la conexión
         try {
-            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            conexion = Conexion.getConexion();
             System.out.println("Conexión realizada.");
             pausar();
 
@@ -453,7 +457,7 @@ public class Principal {
 
         //intentar la conexión
         try {
-            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            conexion = Conexion.getConexion();
             System.out.println("Conexión realizada.");
             pausar();
 
@@ -487,8 +491,7 @@ public class Principal {
 
         //intentar la conexión
         try {
-            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
-            System.out.println("Conexión realizada.");
+            conexion = Conexion.getConexion();
             pausar();
 
             //consulta sql
@@ -536,27 +539,101 @@ public class Principal {
             System.out.print("\nPor favor, introduce la cantidad de productos que quieres comprar: ");
             int cantidadProducto = sc.nextInt();
 
-            //comprobar que hay unidades disponibles
+            //variable para comprobar que hay unidades disponibles y variables del precio y la descripción
             int cantidadDisponible = 0;
+            double precioProducto = 0;
+            String descripcionProducto = "";
 
                 //intentar la conexión con la base de datos
                 try {
-                    //MODIFICAR EL TIPO DE EXCEPCIÓN
-                    //MODIFICAR EL TIPO DE EXCEPCIÓN
-                    //MODIFICAR EL TIPO DE EXCEPCIÓN
-                    //MODIFICAR EL TIPO DE EXCEPCIÓN
-                    //MODIFICAR EL TIPO DE EXCEPCIÓN
-                    //MODIFICAR EL TIPO DE EXCEPCIÓN
-                    //MODIFICAR EL TIPO DE EXCEPCIÓN
-                    //MODIFICAR EL TIPO DE EXCEPCIÓN
-                } catch (Exception e) {
+                    conexion = Conexion.getConexion();
+
+                    //consulta de sql
+                    String consultaObtenerCantidad = "select cantidad, precio, descripcion from productos where id = '" + idProducto + "';";
+
+                    //cosas del sql
+                    Statement sentencia = conexion.createStatement();
+                    ResultSet rs = sentencia.executeQuery(consultaObtenerCantidad);
+
+                    //ejecutar la sentencia y obtener la cantidad y otros datos
+                    if (rs.next()) {
+                        cantidadDisponible = rs.getInt("cantidad");
+                        precioProducto = rs.getDouble("precio");
+                        descripcionProducto = rs.getString("descripcion");
+                    } else {
+                        System.err.println("No se ha encontrado ningún producto con ID " + idProducto);
+                        continue;  //saltar al siguiente ciclo del bucle do-while
+                    }
+
+                    //comprobar si hay cantidad disponible
+                    if (cantidadProducto <= cantidadDisponible) { //si hay stock disponible
+                        //actualizar la cantidad en la base de datos
+                        String actualizarCantidad = "update productos set cantidad = " + (cantidadDisponible - cantidadProducto) + " where id = '" + idProducto + "';";
+                        sentencia.executeUpdate(actualizarCantidad);
+
+                        //añadir el producto comprado a la lista
+                        carrito.add(new Carrito(idProducto, descripcionProducto, cantidadProducto, precioProducto));
+                    } else { //si no hay stock disponible
+                        System.err.println("No hay suficiente stock para la cantidad que se desea comprar");
+                    }
+
+                } catch (SQLException e) {
                     System.err.println("Error comprobando el stock disponible: " + e.getMessage());
                 }
             //preguntar si se desea seguir comprando
-            System.out.print("¿Seguir comprando? (si,no): ");
+            System.out.print("\n¿Seguir comprando? (si,no): ");
             seguirComprando = sc.next();
         } while (!seguirComprando.equalsIgnoreCase("no"));
         //hacer todo lo anterior mientras no se especifique el deseo de dejar de comprar
+
+        //variable para el precio total
+        double precioTotal = 0;
+
+        //mostrar el resumen de la compra
+        System.out.println("\nResumen de compra: ");
+        for (Carrito compra : carrito) {
+            double subTotal = compra.cantidad * compra.precio;
+            precioTotal += subTotal; //calcular el precio
+            System.out.println("\nProducto: " + compra.descripcion + " Cantidad: " + compra.cantidad + " Precio por unidad: " + compra.precio);
+        }
+
+        //mostar el total sin descuento
+        System.out.println("\nTotal sin descuento: " + precioTotal);
+
+        //preguntar si es un cliente registrado
+        System.out.print("¿Es un cliente registrado? (si,no): ");
+        String clienteRegistrado = sc.next();
+
+        //comprobación en caso de ser cliente registrado
+        if (clienteRegistrado.equalsIgnoreCase("si")) {
+            System.out.print("\nPor favor, introduce tu ID de cliente: ");
+            int idCliente = sc.nextInt();
+
+            //intentar la conexión a la base de datos y comprobar que el cliente existe
+            try {
+                conexion = Conexion.getConexion();
+
+                //consulta para buscar al cliente
+                String consultaBuscarCliente = "select vip from clientes where identificacion = '" + idCliente + "';";
+
+                //cosas del sql
+                Statement sentencia = conexion.createStatement();
+                ResultSet rs = sentencia.executeQuery(consultaBuscarCliente);
+
+                //comprobar si el cliente existe y si es un cliente vip
+                if (rs.next()) {
+                    boolean esVip = rs.getBoolean("vip");
+                    double descuento = esVip ? 0.15 : 0.05;
+                    double totalConDescuento = precioTotal * (1 - descuento);
+                    System.out.println("Se ha aplicado un descuento del " + (descuento * 100) + "%.");
+                    System.out.println("Total con descuento: " + totalConDescuento);
+                } else {
+                    System.err.println("\nCliente no encontrado.");
+                }
+            } catch (SQLException e) {
+                System.err.println("Error buscando al cliente: " + e.getMessage());
+            }
+        }
     }
 
     /**
@@ -634,7 +711,7 @@ public class Principal {
     public static void guardarEmpleados(){
         //intentar la conexión con la base de datos
         try {
-            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            conexion = Conexion.getConexion();
             String consultaInsertarEmpleados = "insert into empleados values (?, ?, ?, ?, ?, ?, ?, ?);";
 
             //intentar insertar los empleados
@@ -650,10 +727,10 @@ public class Principal {
                     ps.setString(8, empleado.getDespido());
                     ps.executeUpdate();
                 }
-            } catch (Exception ex){
+            } catch (SQLException ex){
                 System.err.println("\nError guardando los empleados en la base de datos: " + ex.getMessage());
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.err.println("Error guardando los empleados en la base de datos: " + e.getMessage());
         }
     }
@@ -664,7 +741,7 @@ public class Principal {
     public static void guardarClientes(){
         //intentar la conexión con la base de datos
         try {
-            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            conexion = Conexion.getConexion();
             String consultaInsertarClientes = "insert into clientes values (?, ?, ?);";
 
             //intentar insertar los clientes
@@ -675,10 +752,10 @@ public class Principal {
                     ps.setBoolean(3, cliente.getVip());
                     ps.executeUpdate();
                 }
-            } catch (Exception ex){
+            } catch (SQLException ex){
                 System.err.println("Error guardando los clientes en la base de datos: " + ex.getMessage());
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.err.println("\nError guardando los clientes en la base de datos: " + e.getMessage());
         }
     }
@@ -689,7 +766,7 @@ public class Principal {
     public static void guardarProductos(){
         //intentar la conexión con la base de datos
         try {
-            Connection conexion = DriverManager.getConnection(baseDatos, usuario, claveAcceso);
+            conexion = Conexion.getConexion();
             String consultaInsertarProductos = "insert into productos values (?, ?, ?, ?, ?, ?);";
 
             //intentar insertar los productos
@@ -703,11 +780,73 @@ public class Principal {
                     ps.setDouble(6, producto.getPrecio());
                     ps.executeUpdate();
                 }
-            } catch (Exception ex){
+            } catch (SQLException ex){
                 System.err.println("\nError guardando los productos en la base de datos: " + ex.getMessage());
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.err.println("\nError guardando los productos en la base de datos: " + e.getMessage());
+        }
+    }
+
+    /**
+     * método para añadir stock a un producto
+     */
+    public static void anadirStock(){
+        //pedir el logueo del empleado
+        System.out.print("\nPor favor, introduce tu ID de empleado: ");
+        int idEmpleado = sc.nextInt();
+        System.out.print("Por favor, introduce tu contraseña: ");
+        String claveAccesoEmpleado = sc.next();
+
+        try {
+            conexion = Conexion.getConexion();
+
+            //realizar la consulta
+            String consultaSql = "select nombre from empleados where id ='" + idEmpleado + "' and claveAcceso ='" + claveAccesoEmpleado + "' ;";
+
+            //cosas del sql
+            Statement sentencia = conexion.createStatement();
+            ResultSet rs = sentencia.executeQuery(consultaSql);
+            String nombreEmpleado = "";
+
+            //iterar sobre el result set y mostrar los resultados
+            while (rs.next()) {
+                //obtener el nombre
+                nombreEmpleado = rs.getString("nombre");
+                System.out.println("Empleado encontrado: " + nombreEmpleado);
+            }
+
+            if (nombreEmpleado != "") { //se ha encontrado un empleado
+                //pedir el id del producto al que se desea añadir stock
+                System.out.print("\nPor favor, introduce el ID del producto al que hay que sumar stock: ");
+                int idProducto = sc.nextInt();
+
+                //pedir la cantidad de unidades a sumar
+                System.out.print("\nPor favor, introduce el número de unidades a sumar: ");
+                int cantidadSumar = sc.nextInt();
+
+                //consulta sql para obtener el stock actual
+                String consultaStockActual = "select cantidad from productos where id = " + idProducto + ";";
+                ResultSet rsStockActual = sentencia.executeQuery(consultaStockActual);
+                int stockActual = 0;
+
+                if (rsStockActual.next()) {
+                    stockActual = rsStockActual.getInt("cantidad");
+                }
+
+                //consulta sql para actualizar el stock
+                int nuevoStock = stockActual + cantidadSumar;
+                String consultaActualizarStock = "update productos set cantidad = '" + nuevoStock + "' where id = '" + idProducto + "';";
+
+                // cosas del sql
+                sentencia = conexion.createStatement();
+                int filasAfectadas = sentencia.executeUpdate(consultaActualizarStock);
+                System.out.println("\nStock actualizado.");
+            } else { //no se ha encontrado un empleado
+                System.err.println("\nIdentificador o contraseña incorrectos.");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error conectando a la base de datos: " + e.getMessage());
         }
     }
 

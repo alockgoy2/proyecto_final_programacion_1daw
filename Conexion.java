@@ -19,7 +19,7 @@ public class Conexion {
                 // Cargar el driver de MySQL
                 //Class.forName("com.mysql.cj.jdbc.Driver");
                 conexion = DriverManager.getConnection(URL, USUARIO, PASSWD);
-                System.out.println("Conexión OK");
+                //System.out.println("Conexión OK");
             } catch (SQLException e) {
                 System.out.println("Error al conectar a la base de datos");
                 e.printStackTrace();
