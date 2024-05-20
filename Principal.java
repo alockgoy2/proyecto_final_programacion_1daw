@@ -650,6 +650,7 @@ public class Principal {
 
         //pedir los datos para la reclamación
         System.out.print("\nPor favor, escribe tu nombre: ");
+        sc.nextLine();
         String nombreCliente = sc.nextLine(); //nombre del cliente
 
         System.out.print("\nPor favor, escribe tus apellidos (al menos el primero): ");
@@ -702,7 +703,7 @@ public class Principal {
             System.err.println("Error realizando la reclamación: " + e.getMessage());
             pausar();
         }
-
+        mostrarMenu();
     }
 
     /**
