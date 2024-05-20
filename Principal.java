@@ -703,7 +703,6 @@ public class Principal {
             System.err.println("Error realizando la reclamación: " + e.getMessage());
             pausar();
         }
-        mostrarMenu();
     }
 
     /**
