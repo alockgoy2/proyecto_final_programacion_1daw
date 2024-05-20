@@ -55,3 +55,27 @@ Modificada la base de datos del proyecto (problemas con los productos).
 Modificado el método “eliminarProductos” de la clase “Principal”.
 Modificada la clase “Productos” (añadido atributo ID).
 
+Modificado el método “anadirProductos” de la clase “Principal”. (pedir el ID y sc.nextLine del demonio).
+Modificado el método “to string” de la clase “Productos”.
+Modificado el método “guardarProductos” de la clase “Principal”.
+Modificado el mensaje de salida del programa en la clase “Principal”.
+Modificado el método “registrarCliente” de la clase “Principal”.
+Modificado el método “guardarClientes” de la clase “Principal”.
+Modificado el método “guardarEmpleados” de la clase “Principal”.
+Modificado el método “mostrarEmpleados” de la clase “Principal”. (ocultado el ver las contraseñas).
+Añadido método “to string” a la clase “Empleados” (para hacer pruebas).
+Modificado el método “quieroComprar” de la clase “Principal”. (añadidas primeras líneas)
+Modificado el método “mostrarProductos” de la clase “Principal” (mostrar el id de los productos).
+Añadida la clase “Conexión” (aún no implementada).
+Modificada la clase “Conexión” con los datos para conectar a la base de datos del proyecto.
+
+
+
+18/05/2024
+Modificado el método “quieroComprar” de la clase “Principal” (parece que funciona bien).
+Añadido arraylist de carrito en la clase “Principal”.
+Creada la clase “Carrito” para facilitar el método “quieroComprar” de la clase “Principal”. 
+Implementada la clase “Conexión”.
+Modificada la clase “Conexión”, eliminado el mensaje de que la conexión se ha realizado.
+Eliminados datos de conexión a la base de datos de la clase “Principal”.
+Añadido método “anadirStock” a la clase “Principal”.
