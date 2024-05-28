@@ -133,7 +133,7 @@ public class Principal {
      */
     public static void pausar(){
         try {
-            Thread.sleep(2000); //pausa de 2 segundos
+            Thread.sleep(1000); //pausa de 1 segundo
         } catch (InterruptedException e) {
             System.err.println("Error al pausar la ejecución.");
         } //esto es para una pausa, ya no da tiempo a leer que se ha introducido una opción no válida
@@ -848,6 +848,62 @@ public class Principal {
         } catch (SQLException e) {
             System.err.println("Error conectando a la base de datos: " + e.getMessage());
         }
+    }
+
+    /**
+     * método para el nuevo menú
+     */
+    public static void nuevoMenu(){
+        //variable para la conexión
+        int opcion = 0;
+
+        //bucle principal
+        do {
+            System.out.println("\n-------------BIENVENIDO A CYBERNOVA-------------");
+            System.out.println("OPCIONES:");
+            System.out.println("-------------");
+            System.out.println("1.  Iniciar sesión (empleado o jefe).");
+            System.out.println("2.  Comprar.");
+            System.out.println("3.  Reclamar.");
+            System.out.println("4.  Salir"); 
+
+            //pedir la opción
+            System.out.print("\nPor favor, elige una opción: ");
+            opcion = sc.nextInt();
+
+            //switch con las opciones
+            switch (opcion) {
+                case 1:
+                    
+                    break;
+
+                case 2:
+                    
+                    break;
+
+                case 3:
+                    
+                    break;
+
+                case 4:
+                System.out.println("Guardando clientes...");
+                guardarClientes();
+                pausar();
+                System.out.println("Guardando empleados...");
+                guardarEmpleados();
+                pausar();
+                System.out.println("Guardando productos...");
+                guardarProductos();
+                pausar();
+                System.out.println("Saliendo del programa...");
+                pausar();
+                    break;
+            
+                default:
+                System.err.println("Opción no válida.");
+                    break;
+            }
+        } while (opcion != 4); //hacer todo lo anterior mientras la opción elegida no sea 4
     }
 
 }
