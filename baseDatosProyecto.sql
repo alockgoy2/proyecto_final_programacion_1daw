@@ -56,6 +56,26 @@ INSERT INTO empleados (id, dni, nombre, apellidos, claveAcceso, salario, fechaCo
 (109, '90123456I', 'Elena', 'Pérez Martínez', 'securepass', 1700.00, '10/01/2023', '25/04/2024'),
 (110, '01234567J', 'Javier', 'Fernández García', 'admin123', 1600.00, '28/02/2023', NULL); #todo insertado
 
+#crear la tabla jefes
+create table jefes(
+id int primary key,
+dni varchar(9),
+nombre varchar(30),
+apellidos varchar(60),
+claveAcceso varchar(50),
+salario double, 
+fechaContratacion varchar(10),
+fechaDespido varchar(10)
+);
+
+-- Insertar el primer jefe
+insert into jefes (id, dni, nombre, apellidos, claveAcceso, salario, fechaContratacion, fechaDespido) 
+values (1, '12345678A', 'Carlos', 'Gómez Pérez', 'abc123XYZ', 55000.00, '2021-01-15', null);
+
+-- Insertar el segundo jefe
+insert into jefes (id, dni, nombre, apellidos, claveAcceso, salario, fechaContratacion, fechaDespido) 
+values (2, '87654321B', 'Ana', 'López García', 'xyz789ABC', 62000.00, '2020-09-10', null);
+
 create table clientes(
 identificacion int primary key,
 nombre varchar(30),
@@ -73,6 +93,7 @@ INSERT INTO clientes (identificacion, nombre, vip) VALUES
 (9, 'Jorge Sánchez', 0),
 (10, 'Elena Vázquez', 0);
 
+select * from jefes;
 select * from empleados;
 select * from clientes;
 select * from productos;
