@@ -133,4 +133,68 @@ public class ClientesDAO {
             System.err.println("\nError guardando los clientes en la base de datos: " + e.getMessage());
         }
     }
+
+    /**
+     * método para modificar a un cliente
+     */
+    public static void modificarCliente(){
+        //pedir el id del cliente a modificar
+        System.out.print("\nPor favor, escribe el id del cliente a modificar: ");
+        int idClienteModificar = sc.nextInt();
+
+        //buscar al cliente
+        String consultaBuscarCliente = "select * from clientes where identificacion = '" + idClienteModificar + "';";
+    
+        //intentar la conexión
+        try {
+            conexion = Conexion.getConexion();
+
+            //cosas del sql
+            Statement sentencia1 = conexion.createStatement();
+            ResultSet rs1 = sentencia1.executeQuery(consultaBuscarCliente);
+
+            //mostrar al cliente
+            int idEncontrado = 0;
+            String nombreEncontrado = null;
+            boolean vipEncontrado = false;
+            if (rs1.next()) {
+                idEncontrado = rs1.getInt("identificacion");
+                nombreEncontrado = rs1.getString("nombre");
+                vipEncontrado = rs1.getBoolean("vip");
+                System.out.println("Cliente encontrado: " + nombreEncontrado);
+            }
+
+            if (nombreEncontrado == null) {
+                System.err.println("No se ha encontrado un cliente con ese ID.");
+            } else {
+                System.out.println("\nPor favor, introduce los nuevos datos del cliente: ");
+                System.out.print("Nuevo nombre: ");
+                sc.nextLine();
+                String nuevoNombre = sc.nextLine();
+                System.out.print("¿VIP? (1 = si, 0 = no): ");
+                int nuevoVip = sc.nextInt();
+
+                boolean comprobarVip = false;
+
+                // comprobar si es un cliente vip
+                if (nuevoVip == 1) {
+                    comprobarVip = true;
+                }
+
+                //consulta para insertar los valores
+                String consultaModificarCliente = "update clientes set nombre = ?, vip = ? where identificacion = '" + idClienteModificar + "' ; ";
+
+                try (PreparedStatement ps = conexion.prepareStatement(consultaModificarCliente)){
+                    ps.setString(1, nuevoNombre);
+                    ps.setBoolean(2, comprobarVip);
+                    ps.executeUpdate();
+                    System.out.println("Datos actualizados.");
+                } catch (Exception e) {
+                    System.err.println("\nError actualizando los datos del cliente: " + e.getMessage());
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error modificando los datos del cliente: " + e.getMessage());
+        }
+    }
 }

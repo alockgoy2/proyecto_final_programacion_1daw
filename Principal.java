@@ -136,7 +136,7 @@ public class Principal {
                 System.err.println("Opción no válida.");
                     break;
             }
-        } while (opcion != 4); //hacer todo lo anterior mientras la opción elegida no sea 4
+        } while (opcion != 5); //hacer todo lo anterior mientras la opción elegida no sea 4
     }
 
     /**
@@ -223,7 +223,7 @@ public class Principal {
                             break;
 
                         case 5:
-                            
+                            ClientesDAO.modificarCliente();
                             break;
 
                         case 6:
