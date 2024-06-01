@@ -207,4 +207,73 @@ public class JefesDAO {
             Principal.pausar();
         }
     }
+
+    /**
+     * método para ascender a un empleado a jefe
+     */
+    public static void ascenderEmpleado(){
+        //pedir el ID del empleado que se quiere ascender
+        System.out.print("\nPor favor, escribe el ID del empleado al que quieres ascender: ");
+        int idEmpleadoAscender = sc.nextInt();
+
+        //intentar la conexión
+        try {
+            conexion = Conexion.getConexion();
+
+            //consulta para mostrar al empleado encontrado
+            String consultaBuscarEmpleado = "select nombre, apellidos from empleados where id = '" + idEmpleadoAscender + "'; ";
+
+            //cosas del sql
+            String nombreEmpleadoEncontrado = null;
+            String apellidosEmpleadoEncontrado = null;
+            Statement sentencia1 = conexion.createStatement();
+            ResultSet rs1 = sentencia1.executeQuery(consultaBuscarEmpleado);
+
+            if (rs1.next()) {
+                nombreEmpleadoEncontrado = rs1.getString("nombre");
+                apellidosEmpleadoEncontrado = rs1.getString("apellidos");
+            }
+
+            //comprobar que se ha encontrado a alguien
+            if (nombreEmpleadoEncontrado == null) {
+                System.err.println("\nNo se encontró un empleado con ese ID.");
+                Principal.pausar();
+            } else {
+                System.out.println("\nEmpleado encontrado: " + nombreEmpleadoEncontrado + " " + apellidosEmpleadoEncontrado);
+                Principal.pausar();
+
+                //preguntar si se quiere ascender a este empleado
+                System.out.print("¿Quieres ascender a este empleado? (si, no): ");
+                String ascender = sc.next();
+
+                if (ascender.equalsIgnoreCase("si")) {
+                    //consulta para ascender a un empleado
+                    String consultaAscenderEmpleado = "insert into jefes (select * from empleados where id = '" + idEmpleadoAscender + "' );";
+
+                    //cosas del sql
+                    Statement sentencia2 = conexion.createStatement();
+                    int rs2 = sentencia2.executeUpdate(consultaAscenderEmpleado);
+                    System.out.println("Empleado ascendido a jefe.");
+
+                    //consulta para eliminarlo de empleados
+                    String consultaEliminarEmpleado = "delete from empleados where id = '" + idEmpleadoAscender + "' ;";
+
+                    //cosas del sql
+                    Statement sentencia3 = conexion.createStatement();
+                    int rs3 = sentencia3.executeUpdate(consultaEliminarEmpleado);
+                    System.out.println("Empleado eliminado de empleados.");
+                    Principal.pausar();
+                    
+                } else if(ascender.equalsIgnoreCase("no")){
+                    System.out.println("Operación cancelada.");
+                    Principal.pausar();
+                } else {
+                    System.err.println("Opción no válida.");
+                    Principal.pausar();
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("\nError ascendiendo al empleado: " + e.getMessage());
+        }
+    }
 }
