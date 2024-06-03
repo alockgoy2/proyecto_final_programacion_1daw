@@ -1,5 +1,6 @@
 //importar todo lo necesario
 import java.util.*;
+import java.io.*;
 import java.sql.*;
 
 public class CarritoDAO {
@@ -87,8 +88,14 @@ public class CarritoDAO {
             System.out.println("\nProducto: " + compra.descripcion + " Cantidad: " + compra.cantidad + " Precio por unidad: " + compra.precio);
         }
 
+        Principal.pausar(); //realizar una pequeña pausa
+
         //mostar el total sin descuento
         System.out.println("\nTotal sin descuento: " + precioTotal);
+
+        //variable para el descuento y el nombre del cliente
+        double totalConDescuento = precioTotal;
+        String nombreCliente = "cliente no registrado.";
 
         //preguntar si es un cliente registrado
         System.out.print("¿Es un cliente registrado? (si,no): ");
@@ -104,7 +111,7 @@ public class CarritoDAO {
                 conexion = Conexion.getConexion();
 
                 //consulta para buscar al cliente
-                String consultaBuscarCliente = "select vip from clientes where identificacion = '" + idCliente + "';";
+                String consultaBuscarCliente = "select nombre, vip from clientes where identificacion = '" + idCliente + "';";
 
                 //cosas del sql
                 Statement sentencia = conexion.createStatement();
@@ -112,17 +119,39 @@ public class CarritoDAO {
 
                 //comprobar si el cliente existe y si es un cliente vip
                 if (rs.next()) {
+                    nombreCliente = rs.getString("nombre");
                     boolean esVip = rs.getBoolean("vip");
                     double descuento = esVip ? 0.15 : 0.05;
-                    double totalConDescuento = precioTotal * (1 - descuento);
+                    totalConDescuento = precioTotal * (1 - descuento);
                     System.out.println("Se ha aplicado un descuento del " + (descuento * 100) + "%.");
                     System.out.println("Total con descuento: " + totalConDescuento);
+                    Principal.pausar(); //realizar una pequeña pausa
                 } else {
                     System.err.println("\nCliente no encontrado.");
                 }
             } catch (SQLException e) {
                 System.err.println("Error buscando al cliente: " + e.getMessage());
             }
+        }
+
+        //guardar los datos en un archivo csv
+        try (FileWriter archivoCSV = new FileWriter("compras.csv" , true)){ //modo apéndice para evitar la sobreescritura
+            archivoCSV.append("Producto, cantidad, precio por unidad\n");
+
+            //bucle para escribir los datos
+            for (Carrito compras : Principal.carrito) {
+                archivoCSV.append(compras.descripcion)
+                .append(", ")
+                .append(String.valueOf(compras.cantidad))
+                .append(", ")
+                .append(String.valueOf(compras.precio))
+                .append("\n");
+            }
+            archivoCSV.append("Cliente: ").append(nombreCliente).append("\n");
+            archivoCSV.append("Total: ").append(String.valueOf(totalConDescuento + " euros")).append("\n");
+            archivoCSV.append("\n"); //insertar un salto de línea entre compras
+        } catch (IOException e) {
+            System.err.println("Error guardando los datos en el archivo csv: " + e.getMessage());
         }
     }
 }

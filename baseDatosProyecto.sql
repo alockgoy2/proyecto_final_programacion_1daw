@@ -56,6 +56,9 @@ INSERT INTO empleados (id, dni, nombre, apellidos, claveAcceso, salario, fechaCo
 (109, '90123456I', 'Elena', 'Pérez Martínez', 'securepass', 1700.00, '10/01/2023', '25/04/2024'),
 (110, '01234567J', 'Javier', 'Fernández García', 'admin123', 1600.00, '28/02/2023', NULL); #todo insertado
 
+INSERT INTO empleados (id, dni, nombre, apellidos, claveAcceso, salario, fechaContratacion, fechaDespido) VALUES
+(101, '12345678A', 'Juan', 'García Pérez', 'clave123', 1800.00, '15/01/2023', NULL);
+
 #crear la tabla jefes
 create table jefes(
 id int primary key,
@@ -92,6 +95,27 @@ INSERT INTO clientes (identificacion, nombre, vip) VALUES
 (8, 'Laura Díaz', 1),     -- VIP
 (9, 'Jorge Sánchez', 0),
 (10, 'Elena Vázquez', 0);
+
+#crear las tablas de las relaciones
+create table jefe_empleado(
+id_empleado int,
+id_jefe int
+);
+
+create table empleado_producto (
+id_empleado int,
+id_producto int
+);
+
+create table compra(
+identificacion_cliente int,
+id_producto int
+);
+
+create table empleado_cliente(
+id_empleado int,
+identificacion_cliente int
+);
 
 select * from jefes;
 select * from empleados;
