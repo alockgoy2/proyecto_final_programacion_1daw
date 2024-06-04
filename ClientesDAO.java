@@ -38,7 +38,7 @@ public class ClientesDAO {
         System.out.print("\nPor favor, escribe tu email: ");
         String emailCliente = sc.nextLine(); //correo electrónico del cliente
 
-        System.out.print("\nPor favor, escribe el motivo de la reclamación (producto o problemas con el personal): ");
+        System.out.print("\nPor favor, escribe el motivo de la reclamación (producto o empleado): ");
         String motivoReclamacion = sc.nextLine(); //motivo de la reclamación
 
         System.out.print("\nPor favor, describe el problema: ");
