@@ -142,17 +142,30 @@ public class Principal {
      * método para loguearse como empleado o como jefe
      */
     public static void loguearse(){
-        //preguntar si se es un jefe o un empleado
-        System.out.print("\n¿Jefe o empleado?: ");
-        String quienSoy = sc.next();
+        //pedir el id del emplado
+        System.out.print("\nPor favor, introduce tu ID: ");
+        int idTrabajador = sc.nextInt();
 
-        //comprobar
-        if (quienSoy.equalsIgnoreCase("jefe")) {
-            menuJefes();
-        } else if(quienSoy.equalsIgnoreCase("empleado")){
-            menuEmpleados();
-        } else{
-            System.err.println("Error, opción no válida.");
+        //pedir la clave
+        System.out.print("Por favor, introduce tu contraseña: ");
+        String claveTrabajador= sc.next();
+
+        //comprobar los valores obtenidos
+        Empleados empleado = EmpleadosDAO.comprobarUsuario(idTrabajador, claveTrabajador);
+
+        //comprobar los datos
+        if (empleado != null) {
+            System.out.println("Empleado encontrado: " + empleado.getNombre() + ", " + (empleado.getEsJefe() ? "Jefe" : "Empleado"));
+            Principal.pausar();
+
+            //dependiendo del empleado encontrado lanzar un menú u otro
+            if (empleado.getEsJefe()) {
+                menuJefes();
+            } else {
+                menuEmpleados();
+            }
+        } else {
+            System.err.println("Identificador o contraseña incorrectos.");
         }
     }
 
@@ -160,198 +173,134 @@ public class Principal {
      * menú para los jefes
      */
     public static void menuJefes(){
-        //pedir el logueo del jefe
-        System.out.print("\nPor favor, introduce tu ID de jefe: ");//pedir el id del jefe
-        int idJefe = sc.nextInt();
 
-        System.out.print("Por favor, introduce tu clave de acceso: "); //pedir la clave del jefe
-        String claveAccesoJefe = sc.next();
+        // variable para la opción
+        int opcionJefe = 0;
+        do {
+            System.out.println("\nOpciones para los jefes: ");
+            System.out.println("1.  Añadir un empleado.");
+            System.out.println("2.  Eliminar un empleado.");
+            System.out.println("3.  Ascender a jefe a un empleado.");
+            System.out.println("4.  Mostrar todos los empleados.");
+            System.out.println("5.  Modificar un cliente.");
+            System.out.println("6.  Eliminar un cliente.");
+            System.out.println("7.  Mostrar todos los productos.");
+            System.out.println("8.  Volver al menú principal.");
 
-        //intentar la conexión
-        try {
-            conexion = Conexion.getConexion();
+            // pedir la opción
+            System.out.print("\nPor favor, escoge una opción: ");
+            opcionJefe = sc.nextInt();
 
-            //realizar la consulta
-            String consultaSql = "select nombre from jefes where id ='" + idJefe + "' and claveAcceso ='" + claveAccesoJefe + "' ;";
+            // switch con las opciones
+            switch (opcionJefe) {
+                case 1:
+                    JefesDAO.anadirEmpleado();
+                    break;
 
-            //cosas del sql
-            Statement sentencia = conexion.createStatement();
-            ResultSet rs = sentencia.executeQuery(consultaSql);
-            String nombreJefe = "";
+                case 2:
+                    JefesDAO.eliminarEmpleado();
+                    break;
 
-            //iterar sobre el result set y mostrar los resultados
-            while (rs.next()) {
-                //obtener el nombre
-                nombreJefe = rs.getString("nombre");
-                System.out.println("Jefe encontrado: " + nombreJefe);
-                pausar();
+                case 3:
+                    JefesDAO.ascenderEmpleado();
+                    break;
+
+                case 4:
+                    JefesDAO.mostrarEmpleados();
+                    break;
+
+                case 5:
+                    ClientesDAO.modificarCliente();
+                    break;
+
+                case 6:
+                    JefesDAO.eliminarCliente();
+                    break;
+
+                case 7:
+                    mostrarProductos();
+                    break;
+
+                case 8:
+                    System.out.println("Volviendo al menú principal...");
+                    break;
+
+                default:
+                    System.err.println("Opción no válida.");
+                    break;
             }
+        } while (opcionJefe != 8); //hacer todo lo anterior mientras la opción elegida no sea 8
 
-            if (nombreJefe != "") { //se ha encontrado un jefe
-                int opcionJefe = 0;
-                do {
-                    System.out.println("\nOpciones para los jefes: ");
-                    System.out.println("1.  Añadir un empleado.");
-                    System.out.println("2.  Eliminar un empleado.");
-                    System.out.println("3.  Ascender a jefe a un empleado.");
-                    System.out.println("4.  Mostrar todos los empleados.");
-                    System.out.println("5.  Modificar un cliente.");
-                    System.out.println("6.  Eliminar un cliente.");
-                    System.out.println("7.  Mostrar todos los productos.");
-                    System.out.println("8.  Volver al menú principal.");
-
-                    // pedir la opción
-                    System.out.print("\nPor favor, escoge una opción: ");
-                    opcionJefe = sc.nextInt();
-
-                    //switch con las opciones
-                    switch (opcionJefe) {
-                        case 1:
-                            JefesDAO.anadirEmpleado();
-                            break;
-
-                        case 2:
-                            JefesDAO.eliminarEmpleado();
-                            break;
-
-                        case 3:
-                            JefesDAO.ascenderEmpleado();
-                            break;
-
-                        case 4:
-                            JefesDAO.mostrarEmpleados();
-                            break;
-
-                        case 5:
-                            ClientesDAO.modificarCliente();
-                            break;
-
-                        case 6:
-                            JefesDAO.eliminarCliente();
-                            break;
-
-                        case 7:
-                            mostrarProductos();
-                            break;
-
-                        case 8:
-                            System.out.println("Volviendo al menú principal...");
-                            break;
-                    
-                        default:
-                        System.err.println("Opción no válida.");
-                            break;
-                    }
-                } while (opcionJefe != 8);
-                
-            } else {
-                System.err.println("Identificador o contraseña incorrectos.");
-            }
-        } catch (SQLException e) {
-            System.err.println("Ha habido un error: " + e.getMessage());
-        }
     }
+        
 
     /**
      * menú para los empleados
      */
     public static void menuEmpleados(){
-        //pedir el logueo del empleado
-        System.out.print("\nPor favor, introduce tu ID de empleado: ");//pedir el id del empleado
-        int idEmpleado = sc.nextInt();
+        
+        // variable para la opción del empleado
+        int opcionEmpleado = 0;
 
-        System.out.print("Por favor, introduce tu clave de acceso: "); //pedir la clave del empleado
-        String claveAccesoEmpleado = sc.next();
+        // bucle principal
+        do {
+            System.out.println("\nOpciones para los empleados: ");
+            System.out.println("1.  Añadir un producto.");
+            System.out.println("2.  Eliminar un producto por marca.");
+            System.out.println("3.  Añadir stock de un producto.");
+            System.out.println("4.  Mostrar todos los productos.");
+            System.out.println("5.  Mostrar todos los empleados.");
+            System.out.println("6.  Mostrar todos los clientes.");
+            System.out.println("7.  Modificar un cliente.");
+            System.out.println("8.  Eliminar un cliente.");
+            System.out.println("9.  Volver al menú principal.");
 
-        //intentar la conexión
-        try {
-            conexion = Conexion.getConexion();
+            System.out.print("\nPor favor, escoge una opción: ");
+            opcionEmpleado = sc.nextInt();
 
-            //realizar la consulta
-            String consultaSql = "select nombre from empleados where id ='" + idEmpleado + "' and claveAcceso ='" + claveAccesoEmpleado + "' ;";
+            // switch con las opciones
+            switch (opcionEmpleado) {
+                case 1:
+                    EmpleadosDAO.anadirProducto();
+                    break;
 
-            //cosas del sql
-            Statement sentencia = conexion.createStatement();
-            ResultSet rs = sentencia.executeQuery(consultaSql);
-            String nombreEmpleado = null;
+                case 2:
+                    EmpleadosDAO.eliminarProducto();
+                    break;
 
-            //iterar sobre el result set y mostrar los resultados
-            while (rs.next()) {
-                //obtener el nombre
-                nombreEmpleado = rs.getString("nombre");
-                System.out.println("Empleado encontrado: " + nombreEmpleado);
-                pausar();
+                case 3:
+                    EmpleadosDAO.anadirStock();
+                    break;
+
+                case 4:
+                    mostrarProductos();
+                    break;
+
+                case 5:
+                    EmpleadosDAO.mostrarEmpleados();
+                    break;
+
+                case 6:
+                    EmpleadosDAO.mostrarClientes();
+                    break;
+
+                case 7:
+                    ClientesDAO.modificarCliente();
+                    break;
+
+                case 8:
+                    EmpleadosDAO.eliminarCliente();
+                    break;
+
+                case 9:
+                    System.out.println("\nVolviendo al menú principal...");
+                    pausar();
+                    break;
+
+                default:
+                    System.err.println("\nOpción no válida.");
+                    break;
             }
-
-            if (nombreEmpleado != null) {//se ha encontrado un empleado
-                int opcion = 0;
-                
-                //bucle principal
-                do {
-                    System.out.println("\nOpciones para los empleados: ");
-                    System.out.println("1.  Añadir un producto.");
-                    System.out.println("2.  Eliminar un producto por marca.");
-                    System.out.println("3.  Añadir stock de un producto.");
-                    System.out.println("4.  Mostrar todos los productos.");
-                    System.out.println("5.  Mostrar todos los empleados.");
-                    System.out.println("6.  Mostrar todos los clientes.");
-                    System.out.println("7.  Modificar un cliente.");
-                    System.out.println("8.  Eliminar un cliente.");
-                    System.out.println("9.  Volver al menú principal.");
-
-                    System.out.print("\nPor favor, escoge una opción: ");
-                    opcion = sc.nextInt();
-
-                    //switch con las opciones
-                    switch (opcion) {
-                        case 1:
-                            EmpleadosDAO.anadirProducto();
-                            break;
-
-                        case 2:
-                            EmpleadosDAO.eliminarProducto();
-                            break;
-
-                        case 3:
-                            EmpleadosDAO.anadirStock();
-                            break;
-
-                        case 4:
-                            mostrarProductos();
-                            break;
-
-                        case 5:
-                            EmpleadosDAO.mostrarEmpleados();
-                            break;
-
-                        case 6:
-                            EmpleadosDAO.mostrarClientes();
-                            break;
-
-                        case 7:
-                            ClientesDAO.modificarCliente();
-                            break;
-
-                        case 8:
-                            EmpleadosDAO.eliminarCliente();
-                            break;
-
-                        case 9:
-                            System.out.println("\nVolviendo al menú principal...");
-                            pausar();
-                            break;
-                    
-                        default:
-                        System.err.println("\nOpción no válida.");
-                            break;
-                    }
-                } while (opcion != 9); //hacer todo lo anterior mientras la opción elegida no sea 9
-            } else {
-                System.err.println("\nIdentificador o contraseña incorrectos.");
-                pausar();
-            }
-        } catch (Exception e) {
-            System.err.println("\nNo se ha podido acceder al menú de empleados: " + e.getMessage());
-        }
+        } while (opcionEmpleado != 9); // hacer todo lo anterior mientras la opción elegida no sea 9
     }
 }

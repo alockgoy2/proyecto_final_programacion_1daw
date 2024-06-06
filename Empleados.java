@@ -6,9 +6,10 @@ public class Empleados extends Persona{ //esta clase hereda de persona
     private String contratacion;
     private String despido;
     private double sueldo;
+    boolean esJefe;
     
     //constructor
-    public Empleados (int identificacion, String nombre, String dni, String apellidos, String claveAcceso, double sueldo, String contratacion, String despido){
+    public Empleados (int identificacion, String nombre, String dni, String apellidos, String claveAcceso, double sueldo, String contratacion, String despido, boolean esJefe){
         super(identificacion, nombre);
         this.apellidos = apellidos;
         this.dni = dni;
@@ -16,6 +17,7 @@ public class Empleados extends Persona{ //esta clase hereda de persona
         this.sueldo = sueldo;
         this.contratacion = contratacion;
         this.despido = despido;
+        this.esJefe = esJefe;
     }
     
     //getters y setters
@@ -68,14 +70,32 @@ public class Empleados extends Persona{ //esta clase hereda de persona
         this.sueldo = sueldo;
     }
 
-    //método to string
-    @Override
-    public String toString() {
-        return "Empleados [dni=" + dni + ", apellidos=" + apellidos + ", claveAcceso=" + claveAcceso + ", contratacion="
-                + contratacion + ", despido=" + despido + ", sueldo=" + sueldo + "]";
+
+    public boolean isEsJefe() {
+        return this.esJefe;
     }
 
-    
+    public boolean getEsJefe() {
+        return this.esJefe;
+    }
 
+    public void setEsJefe(boolean esJefe) {
+        this.esJefe = esJefe;
+    }
+
+
+    //método to string
+
+    @Override
+    public String toString() {
+        return "Empleado" +
+            " dni='" + getDni() + "'" +
+            ", apellidos='" + getApellidos() + "'" +
+            ", claveAcceso='" + getClaveAcceso() + "'" +
+            ", contratacion='" + getContratacion() + "'" +
+            ", despido='" + getDespido() + "'" +
+            ", sueldo='" + getSueldo() + "'" +
+            ", esJefe='" + isEsJefe();
+    }
     
 }

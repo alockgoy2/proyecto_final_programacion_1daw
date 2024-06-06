@@ -228,4 +228,50 @@ public class EmpleadosDAO {
             Principal.pausar();
         }
     }
+
+    /**
+     * método para comprobar si es un jefe o un empleado
+     */
+    public static Empleados comprobarUsuario (int idTrabajador, String claveTrabajador){
+        //objeto de la clase empleado
+        Empleados empleado = null;
+
+        //consulta de sql
+        String consultaComprobarJefe = "select * from empleados where id = ? and claveAcceso = ?";
+
+        //intentar la conexión
+        try {
+            conexion = Conexion.getConexion();
+
+            //cosas del sql
+            PreparedStatement ps = conexion.prepareStatement(consultaComprobarJefe);
+            ps.setInt(1, idTrabajador);
+            ps.setString(2, claveTrabajador);
+            ResultSet rs = ps.executeQuery();
+
+            //comprobar el resultado
+            if (rs.next()) {
+                //datos del empleado
+                int id = rs.getInt("id");
+                String dni = rs.getString("dni");
+                String nombre = rs.getString("nombre");
+                String apellidos = rs.getString("apellidos");
+                String claveAcceso = rs.getString("claveAcceso");
+                double salario = rs.getDouble("salario");
+                String fechaContratacion = rs.getString("fechaContratacion");
+                String fechaDespido = rs.getString("fechaDespido");
+                boolean esJefe = rs.getBoolean("esJefe");
+
+                //crear el objeto de empleado
+                empleado = new Empleados(id, nombre, dni, apellidos, claveAcceso, salario, fechaContratacion, fechaDespido, esJefe);
+            }
+
+            ps.close();
+            rs.close();
+        } catch (SQLException e) {
+            System.err.println("Error comprobando el tipo de empleado: " + e.getMessage());
+        }
+        //devolver el resultado
+        return empleado;
+    }
 }
