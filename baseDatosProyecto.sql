@@ -44,6 +44,18 @@ fechaDespido varchar(10),
 esJefe boolean
 );
 
+#crear la tabla de compras
+create table compras(
+idCompra int auto_increment primary key,
+idProducto int,
+descripcion varchar(60),
+cantidad int,
+precio double,
+nombreCliente varchar(60),
+totalConDescuento double,
+fecha timestamp default current_timestamp
+);
+
 #añadir valores 
 INSERT INTO empleados (id, dni, nombre, apellidos, claveAcceso, salario, fechaContratacion, fechaDespido, esJefe) VALUES
 (101, '12345678A', 'Juan', 'García Pérez', 'clave123', 1800.00, '15/01/2023', NULL, FALSE),
@@ -59,21 +71,22 @@ INSERT INTO empleados (id, dni, nombre, apellidos, claveAcceso, salario, fechaCo
  #todo insertado
 
 create table clientes(
-identificacion int primary key,
+identificacion int auto_increment primary key,
 nombre varchar(30),
+email varchar(100),
 vip boolean);
 
-INSERT INTO clientes (identificacion, nombre, vip) VALUES
-(1, 'Juan Pérez', 1),     -- VIP
-(2, 'María Rodríguez', 0),
-(3, 'Carlos Gómez', 0),
-(4, 'Ana Martínez', 1),   -- VIP
-(5, 'Luis García', 0),
-(6, 'Sofía López', 0),
-(7, 'Pedro Hernández', 0),
-(8, 'Laura Díaz', 1),     -- VIP
-(9, 'Jorge Sánchez', 0),
-(10, 'Elena Vázquez', 0);
+INSERT INTO clientes (identificacion, nombre, email, vip) VALUES
+(1, 'Juan Pérez', 'juan@example.com', 1),     -- VIP
+(2, 'María Rodríguez', 'maria@example.com', 0),
+(3, 'Carlos Gómez', 'carlos@example.com', 0),
+(4, 'Ana Martínez', 'ana@example.com', 1),   -- VIP
+(5, 'Luis García', 'luis@example.com', 0),
+(6, 'Sofía López', 'sofia@example.com', 0),
+(7, 'Pedro Hernández', 'pedro@example.com', 0),
+(8, 'Laura Díaz', 'laura@example.com', 1),     -- VIP
+(9, 'Jorge Sánchez', 'jorge@example.com', 0),
+(10, 'Elena Vázquez', 'elena@example.com', 0);
 
 #crear las tablas de las relaciones
 create table jefe_empleado(
@@ -99,3 +112,4 @@ identificacion_cliente int
 select * from empleados;
 select * from clientes;
 select * from productos;
+select * from compras;

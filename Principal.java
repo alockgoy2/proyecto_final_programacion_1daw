@@ -7,10 +7,6 @@ public class Principal {
 
     //cosas que se pueden usar en varios métodos
     static Scanner sc = new Scanner(System.in); //scanner
-    public static ArrayList<Productos> listaProductos = new ArrayList<>(); //arraylist de los productos
-    public static ArrayList<Carrito> carrito = new ArrayList<>(); //lista del carrito al momento de realizar la compra
-    public static ArrayList<Empleados> listaEmpleados = new ArrayList<>(); //arraylist de los empleados
-    public static ArrayList<Clientes> listaClientes = new ArrayList<>(); //arraylist de los clientes
 
     //datos de conexión a la base de datos
     static Connection conexion;
@@ -20,51 +16,15 @@ public class Principal {
         nuevoMenu();
     }
 
-
     /**
-     * método para pausar la muestra de system out
-     * al tener el menú tantas opciones y mostrarse instantáneamente no da tiempo a ver que se ha ...
-     * ... introducido una opción incorrecta
+     * método para pausar
      */
     public static void pausar(){
         try {
             Thread.sleep(1000); //pausa de 1 segundo
         } catch (InterruptedException e) {
             System.err.println("Error al pausar la ejecución.");
-        } //esto es para una pausa, ya no da tiempo a leer que se ha introducido una opción no válida
-    }
-    
-    /**
-     * método para mostrar todos los productos
-     * aparentemente funciona
-     */
-    public static void mostrarProductos(){
-
-        //intentar la conexión
-        try {
-            conexion = Conexion.getConexion();
-            pausar();
-
-            //consulta sql
-            String consultaMostrarProductos = "select * from productos;";
-
-            //cosas del sql
-            Statement sentencia = conexion.createStatement();
-            ResultSet rs = sentencia.executeQuery(consultaMostrarProductos);
-
-            //mostrar los datos de los empleados
-            while (rs.next()) {
-                System.out.println("--------------------------------");
-                System.out.println("ID: " + rs.getInt("id"));
-                System.out.println("Categoría: " + rs.getString("categoria"));
-                System.out.println("Descripción: " + rs.getString("descripcion"));
-                System.out.println("Cantidad: " + rs.getInt("cantidad"));
-                System.out.println("Precio: " + rs.getDouble("precio"));
-            }
-        } catch (SQLException e) {
-            System.err.println("Error conectando a la base de datos: " + e.getMessage());
-            pausar();
-        }
+        } //esto es para una pausa, ya que no da tiempo a leer que se ha introducido una opción no válida
     }
 
 
@@ -99,14 +59,14 @@ public class Principal {
                     if (hacer == 1) { //si la opción es 1, loguearse como jefe o empleado
                         loguearse();
                     } else if (hacer == 2){ //si la opción es 2, registrarse como cliente
-                        ClientesDAO.registrarCliente();
+                        Clientes.registrarCliente();
                     } else{
                         System.err.println("Opción no válida.");
                     }
                     break;
 
                 case 2:
-                    mostrarProductos();
+                    Productos.mostrarProductos();
                     break;
 
                 case 3:
@@ -114,20 +74,13 @@ public class Principal {
                     break;
 
                 case 4:
-                ClientesDAO.quieroReclamar();    
+                Clientes.quieroReclamar();    
                     break;
 
                 case 5:
-                System.out.println("Guardando clientes...");
-                ClientesDAO.guardarClientes();
-                pausar();
-                System.out.println("Guardando empleados...");
-                JefesDAO.guardarEmpleados();
-                pausar();
-                System.out.println("Guardando productos...");
-                ProductosDAO.guardarProductos();
-                pausar();
                 System.out.println("Saliendo del programa...");
+                Conexion.cerrarConexion();
+                sc.close();
                 pausar();
                     break;
             
@@ -155,7 +108,7 @@ public class Principal {
 
         //comprobar los datos
         if (empleado != null) {
-            System.out.println("Empleado encontrado: " + empleado.getNombre() + ", " + (empleado.getEsJefe() ? "Jefe" : "Empleado"));
+            System.out.println("Empleado encontrado: " + empleado.getDni() + ", " + (empleado.getEsJefe() ? "Jefe" : "Empleado"));
             Principal.pausar();
 
             //dependiendo del empleado encontrado lanzar un menú u otro
@@ -185,7 +138,8 @@ public class Principal {
             System.out.println("5.  Modificar un cliente.");
             System.out.println("6.  Eliminar un cliente.");
             System.out.println("7.  Mostrar todos los productos.");
-            System.out.println("8.  Volver al menú principal.");
+            System.out.println("8.  Ver el historial de compras.");
+            System.out.println("9.  Volver al menú principal.");
 
             // pedir la opción
             System.out.print("\nPor favor, escoge una opción: ");
@@ -194,34 +148,38 @@ public class Principal {
             // switch con las opciones
             switch (opcionJefe) {
                 case 1:
-                    JefesDAO.anadirEmpleado();
+                    Empleados.anadirEmpleado();
                     break;
 
                 case 2:
-                    JefesDAO.eliminarEmpleado();
+                    Empleados.eliminarEmpleado();
                     break;
 
                 case 3:
-                    JefesDAO.ascenderEmpleado();
+                    Empleados.ascenderEmpleado();
                     break;
 
                 case 4:
-                    JefesDAO.mostrarEmpleados();
+                    Empleados.mostrarEmpleados();
                     break;
 
                 case 5:
-                    ClientesDAO.modificarCliente();
+                    Clientes.modificarCliente();
                     break;
 
                 case 6:
-                    JefesDAO.eliminarCliente();
+                    Clientes.eliminarCliente();
                     break;
 
                 case 7:
-                    mostrarProductos();
+                    Productos.mostrarProductos();
                     break;
 
                 case 8:
+                    Carrito.verCompras();
+                    break;
+
+                case 9:
                     System.out.println("Volviendo al menú principal...");
                     break;
 
@@ -229,7 +187,7 @@ public class Principal {
                     System.err.println("Opción no válida.");
                     break;
             }
-        } while (opcionJefe != 8); //hacer todo lo anterior mientras la opción elegida no sea 8
+        } while (opcionJefe != 9); //hacer todo lo anterior mientras la opción elegida no sea 8
 
     }
         
@@ -253,7 +211,8 @@ public class Principal {
             System.out.println("6.  Mostrar todos los clientes.");
             System.out.println("7.  Modificar un cliente.");
             System.out.println("8.  Eliminar un cliente.");
-            System.out.println("9.  Volver al menú principal.");
+            System.out.println("9.  Ver el historial de compras.");
+            System.out.println("10.  Volver al menú principal.");
 
             System.out.print("\nPor favor, escoge una opción: ");
             opcionEmpleado = sc.nextInt();
@@ -261,38 +220,42 @@ public class Principal {
             // switch con las opciones
             switch (opcionEmpleado) {
                 case 1:
-                    EmpleadosDAO.anadirProducto();
+                    Productos.anadirProducto();
                     break;
 
                 case 2:
-                    EmpleadosDAO.eliminarProducto();
+                    Productos.eliminarPorMarca();
                     break;
 
                 case 3:
-                    EmpleadosDAO.anadirStock();
+                    Productos.anadirStock();
                     break;
 
                 case 4:
-                    mostrarProductos();
+                    Productos.mostrarProductos();
                     break;
 
                 case 5:
-                    EmpleadosDAO.mostrarEmpleados();
+                    Empleados.mostrarEmpleados();
                     break;
 
                 case 6:
-                    EmpleadosDAO.mostrarClientes();
+                    Clientes.mostrarClientes();
                     break;
 
                 case 7:
-                    ClientesDAO.modificarCliente();
+                    Clientes.modificarCliente();
                     break;
 
                 case 8:
-                    EmpleadosDAO.eliminarCliente();
+                    Clientes.eliminarCliente();
                     break;
 
                 case 9:
+                    Carrito.verCompras();
+                    break;
+
+                case 10:
                     System.out.println("\nVolviendo al menú principal...");
                     pausar();
                     break;
@@ -301,6 +264,6 @@ public class Principal {
                     System.err.println("\nOpción no válida.");
                     break;
             }
-        } while (opcionEmpleado != 9); // hacer todo lo anterior mientras la opción elegida no sea 9
+        } while (opcionEmpleado != 10); // hacer todo lo anterior mientras la opción elegida no sea 9
     }
 }
