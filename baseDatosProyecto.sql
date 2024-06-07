@@ -88,26 +88,6 @@ INSERT INTO clientes (identificacion, nombre, email, vip) VALUES
 (9, 'Jorge Sánchez', 'jorge@example.com', 0),
 (10, 'Elena Vázquez', 'elena@example.com', 0);
 
-#crear las tablas de las relaciones
-create table jefe_empleado(
-id_empleado int,
-id_jefe int
-);
-
-create table empleado_producto (
-id_empleado int,
-id_producto int
-);
-
-create table compra(
-identificacion_cliente int,
-id_producto int
-);
-
-create table empleado_cliente(
-id_empleado int,
-identificacion_cliente int
-);
 
 select * from empleados;
 select * from clientes;

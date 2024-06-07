@@ -70,7 +70,7 @@ public class Principal {
                     break;
 
                 case 3:
-                CarritoDAO.quieroComprar();
+                    CarritoDAO.quieroComprar();
                     break;
 
                 case 4:

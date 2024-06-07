@@ -1,10 +1,8 @@
 //importar todo lo necesario
 import java.util.*;
-import java.io.*;
 import java.sql.*;
 
 public class CarritoDAO {
-    
 
     //cosas para la conexión
     static Connection conexion;
@@ -30,12 +28,10 @@ public class CarritoDAO {
             Productos.mostrarProductos();
 
             //pedir el id del producto que se quiere comprar
-            System.out.print("\nPor favor, introduce el ID del producto que quieres comprar: ");
-            idProducto = sc.nextInt();
+            idProducto = Carrito.pedirIdProducto();
 
             //pedir la cantidad de producto que se desea comprar
-            System.out.print("\nPor favor, introduce la cantidad de productos que quieres comprar: ");
-            cantidadProducto = sc.nextInt();
+            cantidadProducto = Carrito.pedirCantidadProducto();
 
             //variable para comprobar que hay unidades disponibles y variables del precio y la descripción
             cantidadDisponible = 0;
@@ -47,11 +43,12 @@ public class CarritoDAO {
                     conexion = Conexion.getConexion();
 
                     //consulta de sql
-                    String consultaObtenerCantidad = "select cantidad, precio, descripcion from productos where id = '" + idProducto + "';";
+                    String consultaObtenerCantidad = "select cantidad, precio, descripcion from productos where id = ? ;";
 
                     //cosas del sql
-                    Statement sentencia = conexion.createStatement();
-                    ResultSet rs = sentencia.executeQuery(consultaObtenerCantidad);
+                    PreparedStatement sentencia = conexion.prepareStatement(consultaObtenerCantidad);
+                    sentencia.setInt(1, idProducto);
+                    ResultSet rs = sentencia.executeQuery();
 
                     //ejecutar la sentencia y obtener la cantidad y otros datos
                     if (rs.next()) {
@@ -78,9 +75,10 @@ public class CarritoDAO {
                 } catch (SQLException e) {
                     System.err.println("Error comprobando el stock disponible: " + e.getMessage());
                 }
+
             //preguntar si se desea seguir comprando
-            System.out.print("\n¿Seguir comprando? (si,no): ");
-            seguirComprando = sc.next();
+            seguirComprando = Carrito.preguntarSeguirComprando();
+
         } while (!seguirComprando.equalsIgnoreCase("no"));
         //hacer todo lo anterior mientras no se especifique el deseo de dejar de comprar
 
@@ -101,8 +99,7 @@ public class CarritoDAO {
         Principal.pausar(); //realizar una pequeña pausa
 
         //preguntar si se desea proceder con la compra
-        System.out.print("\n¿Estás seguro de querer realizar esta compra? (si, no): ");
-        String estoySeguro = sc.next();
+        String estoySeguro = Carrito.seguroRealizarCompra();
 
         if (estoySeguro.equalsIgnoreCase("si")) { // el cliente quiere terminar la compra
             // variable para el descuento y el nombre del cliente
@@ -110,24 +107,23 @@ public class CarritoDAO {
             String nombreCliente = "cliente no registrado.";
 
             // preguntar si es un cliente registrado
-            System.out.print("\n¿Es un cliente registrado? (si,no): ");
-            String clienteRegistrado = sc.next();
+            String clienteRegistrado = Carrito.preguntarClienteRegistrado();
 
             // comprobación en caso de ser cliente registrado
             if (clienteRegistrado.equalsIgnoreCase("si")) {
-                System.out.print("\nPor favor, introduce tu ID de cliente: ");
-                int idCliente = sc.nextInt();
+                int idCliente = Carrito.pedirIdCliente();
 
                 // intentar la conexión a la base de datos y comprobar que el cliente existe
                 try {
                     conexion = Conexion.getConexion();
 
                     // consulta para buscar al cliente
-                    String consultaBuscarCliente = "select nombre, vip from clientes where identificacion = '" + idCliente + "';";
+                    String consultaBuscarCliente = "select nombre, vip from clientes where identificacion = ? ;";
 
                     // cosas del sql
-                    Statement sentencia = conexion.createStatement();
-                    ResultSet rs = sentencia.executeQuery(consultaBuscarCliente);
+                    PreparedStatement sentencia = conexion.prepareStatement(consultaBuscarCliente);
+                    sentencia.setInt(1, idCliente);
+                    ResultSet rs = sentencia.executeQuery();
 
                     // comprobar si el cliente existe y si es un cliente vip
                     if (rs.next()) {
@@ -238,4 +234,5 @@ public class CarritoDAO {
         //devolver la lista
         return compras;
     }
+
 }
