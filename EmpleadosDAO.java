@@ -204,6 +204,7 @@ public class EmpleadosDAO {
             sentenciaEliminarEmpleado.executeUpdate();
 
             System.out.println("Empleado eliminado.");
+            Principal.pausar();
         } catch (SQLException e) {
             System.err.println("Error eliminando al empleado: " + e.getMessage());
         }

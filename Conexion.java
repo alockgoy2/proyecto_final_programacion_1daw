@@ -33,7 +33,7 @@ public class Conexion {
         if (conexion != null) {
             try {
                 conexion.close();
-                System.out.println("Conexión cerrada con la bbdd");
+                //System.out.println("Conexión cerrada con la bbdd");
             } catch (SQLException e) {
                 System.out.println("Error al cerrar la conexión a la base de datos");
                 e.printStackTrace();

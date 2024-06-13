@@ -127,9 +127,10 @@ public class Clientes extends Persona{ //esta clase hereda de persona
         //pedir los datos para la reclamación
         System.out.println("\n¡ATENCIÓN! Si tienes más de un nombre (Ejemplo: Miguel Ángel) escribe tu segundo nombre en la parte de los apellidos.");
         System.out.print("\nPor favor, escribe tu nombre: ");
-        String nombreCliente = sc.nextLine(); //nombre del cliente
+        String nombreCliente = sc.next(); //nombre del cliente
 
         System.out.print("\nPor favor, escribe tus apellidos (al menos el primero): ");
+        sc.nextLine();
         String apellidosCliente = sc.nextLine(); //apellidos del cliente
 
         System.out.print("\n(OPCIONAL) Escribe tu teléfono: ");
